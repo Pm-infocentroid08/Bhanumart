@@ -1,0 +1,54 @@
+{
+  "expo": {
+    "name": "Demo",
+    "slug": "Demo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyCyp5NkufOfhfItDVx2DyfGTpWVRJLp8Dc"
+      },
+      "infoPlist": {
+        "NSLocationAlwaysUsageDescription": "The App Need your location ",
+        "NSLocationUsageDescription": "The App Need your location permission.",
+        "NSLocationWhenInUseUsageDescription": "The App Need your location permissions.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "App Need your location permission.",
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
+      },
+      "bundleIdentifier": "com.krunalkadu9708.Demo"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.krunalkadu9708.Demo",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCyp5NkufOfhfItDVx2DyfGTpWVRJLp8Dc"
+        }
+      },
+      "googleServicesFile": "./google-services.json"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "description": ""
+  }
+}
