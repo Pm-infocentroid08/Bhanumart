@@ -8,6 +8,7 @@ import { Ionicons } from 'react-native-vector-icons'
 import { useSelector } from 'react-redux'
 import Loader from '../Loader';
 import {useNavigation} from '@react-navigation/native'
+import { BASE_URL } from './../../Base';
 // create a component
 const ContactUs = ({ navigation }) => {
     const [name, setName] = useState('');
@@ -54,7 +55,7 @@ const ContactUs = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/user_queries", requestOptions)
+        fetch(BASE_URL+"user_queries", requestOptions)
             .then((response) => response.json())
             .then((responseJson) => {
                 //Hide Loader

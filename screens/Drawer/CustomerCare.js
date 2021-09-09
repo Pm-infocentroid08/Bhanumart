@@ -5,6 +5,7 @@ import { COLORS, FONTS, SIZES } from './../../constants/theme';
 import HeaderBar from './../../components/HeaderBar/index';
 import { Ionicons, Fontisto, Entypo } from 'react-native-vector-icons'
 import { Feather } from 'react-native-vector-icons';
+import { BASE_URL } from './../../Base';
 
 const ListBox = ({ titleText, subTitle1, subTitle2 }) => {
     const [show, setShow] = React.useState(null);
@@ -39,7 +40,7 @@ const CustomerCare = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/faq_page", requestOptions)
+        fetch(BASE_URL+"faq_page", requestOptions)
         .then(response => response.json())
         .then(result => {
             if (result.responce === true) {

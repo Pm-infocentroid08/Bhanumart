@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Modal, Platform, ActivityIndicator, ScrollView, TouchableOpacity, Dimensions, FlatList } from 'react-native'
 import { COLORS } from './../../constants/theme';
+import { BASE_URL } from './../../Base';
 
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
@@ -21,7 +22,7 @@ const ModalPicker = (props) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_state_by_country_id", requestOptions)
+        fetch(BASE_URL+"get_state_by_country_id", requestOptions)
             .then((response) => response.json())
             .then(result => {
                 if (result.responce === true) {

@@ -13,6 +13,7 @@ import { showMessage } from "react-native-flash-message";
 import { TabRouter, useIsFocused } from '@react-navigation/native'
 import { Picker as SelectPicker } from '@react-native-picker/picker'
 import ShoppingCartIcon from '../../components/ShoppingCartIcon';
+import { BASE_URL } from './../../Base';
 const RecoList = ({ navigation }) => {
     const [isLoading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
@@ -48,7 +49,7 @@ const RecoList = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_cart_detail", requestOptionscar)
+        fetch(BASE_URL+"get_cart_detail", requestOptionscar)
             .then(response => response.json())
             .then((responseJson) => {
                 if (responseJson.responce === true) {
@@ -70,7 +71,7 @@ const RecoList = ({ navigation }) => {
         };
 
 
-        fetch("https://bhanumart.vitsol.in/api/get_product_type", requestOptions)
+        fetch(BASE_URL+"get_product_type", requestOptions)
             .then(response => response.json())
             .then(result => setCategory(result.data))
             .catch(error => console.log('error', error))
@@ -91,7 +92,7 @@ const RecoList = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_filtered_product", requestOptionsp)
+        fetch(BASE_URL+"get_filtered_product", requestOptionsp)
             .then(response => response.json())
             .then(result => setData(result.data))
             .catch(error => console.log('error', error))
@@ -130,7 +131,7 @@ const RecoList = ({ navigation }) => {
                 redirect: 'follow'
             };
 
-            fetch("https://bhanumart.vitsol.in/api/add_to_cart", requestOptionsadd)
+            fetch(BASE_URL+"add_to_cart", requestOptionsadd)
                 .then(response => response.json())
                 .then((responseJson) => {
                     if (responseJson.responce === true) {
@@ -167,7 +168,7 @@ const RecoList = ({ navigation }) => {
                 redirect: 'follow'
             };
 
-            fetch("https://bhanumart.vitsol.in/api/add_to_cart", requestOptionsadd)
+            fetch(BASE_URL+"add_to_cart", requestOptionsadd)
                 .then(response => response.json())
                 .then((responseJson) => {
                     if (responseJson.responce === true) {
@@ -219,7 +220,7 @@ const RecoList = ({ navigation }) => {
                                                         <View>
                                                             {
                                                                 item !== '' || undefined ?
-                                                                    <ImageBackground source={{ uri: item.mi }} resizeMode="cover" style={{ width: '100%', height: '100%', borderRadius: SIZES.base, alignItems: 'center', justifyContent: 'center' }}>
+                                                                    <ImageBackground source={{ uri: item.mi }} resizeMode='contain' style={styles.image}>
                                                                         <View style={styles.text}>
                                                                             <Text style={{ fontWeight: 'bold', color: COLORS.white, textAlign: 'center', transform: [{ rotate: '315deg' }], fontSize: 16 }}>Out of Stock</Text>
                                                                         </View>
@@ -234,7 +235,7 @@ const RecoList = ({ navigation }) => {
                                                                         </View>
                                                                     </ImageBackground> :
 
-                                                                    <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL_nkjk3ZfgDytXi0IAHbpW1PnkEf8TpGwsQ2FnEzoWLc7_Z5VFQnN86GJX1drBJh7ysY&usqp=CAU' }} resizeMode="cover" style={{ width: '100%', height: '100%', borderRadius: SIZES.base, alignItems: 'center', justifyContent: 'center' }}>
+                                                                    <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL_nkjk3ZfgDytXi0IAHbpW1PnkEf8TpGwsQ2FnEzoWLc7_Z5VFQnN86GJX1drBJh7ysY&usqp=CAU' }} resizeMode='contain' style={styles.image}>
                                                                         <View style={styles.text}>
                                                                             <Text style={{ fontWeight: 'bold', color: COLORS.white, textAlign: 'center', transform: [{ rotate: '315deg' }], fontSize: 16 }}>Out of Stock</Text>
                                                                         </View>
@@ -263,7 +264,7 @@ const RecoList = ({ navigation }) => {
                                                                         {
                                                                             item !== '' || undefined ?
 
-                                                                                <ImageBackground source={{ uri: item.mi }} resizeMode="cover" style={{ width: '100%', height: '100%', borderRadius: SIZES.base, alignItems: 'center', justifyContent: 'center' }}>
+                                                                                <ImageBackground source={{ uri: item.mi }} resizeMode='contain' style={styles.image}>
                                                                                     <View style={styles.text}>
                                                                                         <Text style={{ fontWeight: 'bold', color: COLORS.white, textAlign: 'center', transform: [{ rotate: '315deg' }], fontSize: 16 }}>Out of Stock</Text>
                                                                                     </View>
@@ -278,7 +279,7 @@ const RecoList = ({ navigation }) => {
                                                                                     </View>
                                                                                 </ImageBackground> :
 
-                                                                                <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL_nkjk3ZfgDytXi0IAHbpW1PnkEf8TpGwsQ2FnEzoWLc7_Z5VFQnN86GJX1drBJh7ysY&usqp=CAU' }} resizeMode="cover" style={{ width: '100%', height: '100%', borderRadius: SIZES.base, alignItems: 'center', justifyContent: 'center' }}>
+                                                                                <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL_nkjk3ZfgDytXi0IAHbpW1PnkEf8TpGwsQ2FnEzoWLc7_Z5VFQnN86GJX1drBJh7ysY&usqp=CAU' }} resizeMode='contain' style={styles.image}>
                                                                                     <View style={styles.text}>
                                                                                         <Text style={{ fontWeight: 'bold', color: COLORS.white, textAlign: 'center', transform: [{ rotate: '315deg' }], fontSize: 16 }}>Out of Stock</Text>
                                                                                     </View>
@@ -305,7 +306,7 @@ const RecoList = ({ navigation }) => {
                                                                     <View>
                                                                         {
                                                                             item !== '' || undefined ?
-                                                                                <ImageBackground source={{ uri: item.mi }} resizeMode="cover" style={{ width: '100%', height: '100%', borderRadius: SIZES.base, alignItems: 'center', justifyContent: 'center' }}>
+                                                                                <ImageBackground source={{ uri: item.mi }} resizeMode='contain' style={styles.image}>
                                                                                     <View style={styles.text}>
                                                                                         <Text style={{ fontWeight: 'bold', color: COLORS.white, textAlign: 'center', transform: [{ rotate: '315deg' }], fontSize: 16 }}>Out of Stock</Text>
                                                                                     </View>
@@ -321,7 +322,7 @@ const RecoList = ({ navigation }) => {
                                                                                 </ImageBackground>
                                                                                 :
 
-                                                                                <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL_nkjk3ZfgDytXi0IAHbpW1PnkEf8TpGwsQ2FnEzoWLc7_Z5VFQnN86GJX1drBJh7ysY&usqp=CAU' }} resizeMode="cover" style={{ width: '100%', height: '100%', borderRadius: SIZES.base, alignItems: 'center', justifyContent: 'center' }}>
+                                                                                <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL_nkjk3ZfgDytXi0IAHbpW1PnkEf8TpGwsQ2FnEzoWLc7_Z5VFQnN86GJX1drBJh7ysY&usqp=CAU' }} resizeMode='contain' style={styles.image}>
                                                                                     <View style={styles.text}>
                                                                                         <Text style={{ fontWeight: 'bold', color: COLORS.white, textAlign: 'center', transform: [{ rotate: '315deg' }], fontSize: 16 }}>Out of Stock</Text>
                                                                                     </View>
@@ -353,7 +354,7 @@ const RecoList = ({ navigation }) => {
                                                         <View style={[styles.imgBox, styles.shadow]}>
                                                             {
                                                                 item !== '' || undefined ?
-                                                                    <ImageBackground source={{ uri: item.mi }} resizeMode="cover" style={{ width: '100%', height: '100%', borderRadius: SIZES.base, alignItems: 'center', justifyContent: 'center' }}>
+                                                                    <ImageBackground source={{ uri: item.mi }} resizeMode='contain' style={styles.image}>
 
                                                                         <View style={{
                                                                             flex: 1, width: 100, alignItems: 'center', flexDirection: 'row',
@@ -366,7 +367,7 @@ const RecoList = ({ navigation }) => {
                                                                         </View>
                                                                     </ImageBackground>
                                                                     :
-                                                                    <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL_nkjk3ZfgDytXi0IAHbpW1PnkEf8TpGwsQ2FnEzoWLc7_Z5VFQnN86GJX1drBJh7ysY&usqp=CAU' }} resizeMode="cover" style={{ width: '100%', height: '100%', borderRadius: SIZES.base, alignItems: 'center', justifyContent: 'center' }}>
+                                                                    <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL_nkjk3ZfgDytXi0IAHbpW1PnkEf8TpGwsQ2FnEzoWLc7_Z5VFQnN86GJX1drBJh7ysY&usqp=CAU' }} resizeMode='contain' style={styles.image}>
 
                                                                         <View style={{
                                                                             flex: 1, width: 100, alignItems: 'center', flexDirection: 'row',
@@ -393,7 +394,7 @@ const RecoList = ({ navigation }) => {
                                                                     <View style={[styles.imgBox, styles.shadow]}>
                                                                         {
                                                                             item !== '' || undefined ?
-                                                                                <ImageBackground source={{ uri: item.mi }} resizeMode="cover" style={{ width: '100%', height: '100%', borderRadius: SIZES.base, alignItems: 'center', justifyContent: 'center' }}>
+                                                                                <ImageBackground source={{ uri: item.mi }} resizeMode='contain' style={styles.image}>
 
                                                                                     <View style={{
                                                                                         flex: 1, width: 100, alignItems: 'center', flexDirection: 'row',
@@ -406,7 +407,7 @@ const RecoList = ({ navigation }) => {
                                                                                     </View>
                                                                                 </ImageBackground>
                                                                                 :
-                                                                                <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL_nkjk3ZfgDytXi0IAHbpW1PnkEf8TpGwsQ2FnEzoWLc7_Z5VFQnN86GJX1drBJh7ysY&usqp=CAU' }} resizeMode="cover" style={{ width: '100%', height: '100%', borderRadius: SIZES.base, alignItems: 'center', justifyContent: 'center' }}>
+                                                                                <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL_nkjk3ZfgDytXi0IAHbpW1PnkEf8TpGwsQ2FnEzoWLc7_Z5VFQnN86GJX1drBJh7ysY&usqp=CAU' }} resizeMode='contain' style={styles.image}>
 
                                                                                     <View style={{
                                                                                         flex: 1, width: 100, alignItems: 'center', flexDirection: 'row',
@@ -431,7 +432,7 @@ const RecoList = ({ navigation }) => {
                                                                     <View style={[styles.imgBox, styles.shadow]}>
                                                                         {
                                                                             item !== '' || undefined ?
-                                                                                <ImageBackground source={{ uri: item.mi }} resizeMode="cover" style={{ width: '100%', height: '100%', borderRadius: SIZES.base, alignItems: 'center', justifyContent: 'center' }}>
+                                                                                <ImageBackground source={{ uri: item.mi }} resizeMode='contain' style={styles.image}>
 
                                                                                     <View style={{
                                                                                         flex: 1, width: 100, alignItems: 'center', flexDirection: 'row',
@@ -444,7 +445,7 @@ const RecoList = ({ navigation }) => {
                                                                                     </View>
                                                                                 </ImageBackground>
                                                                                 :
-                                                                                <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL_nkjk3ZfgDytXi0IAHbpW1PnkEf8TpGwsQ2FnEzoWLc7_Z5VFQnN86GJX1drBJh7ysY&usqp=CAU' }} resizeMode="cover" style={{ width: '100%', height: '100%', borderRadius: SIZES.base, alignItems: 'center', justifyContent: 'center' }}>
+                                                                                <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL_nkjk3ZfgDytXi0IAHbpW1PnkEf8TpGwsQ2FnEzoWLc7_Z5VFQnN86GJX1drBJh7ysY&usqp=CAU' }} resizeMode='contain' style={styles.image}>
 
                                                                                     <View style={{
                                                                                         flex: 1, width: 100, alignItems: 'center', flexDirection: 'row',
@@ -745,13 +746,17 @@ const styles = StyleSheet.create({
         width: 120,
         height: 110,
         borderRadius: SIZES.radius,
-        backgroundColor: COLORS.white
+        backgroundColor: COLORS.white,
+        alignItems:'center',
+        justifyContent:'center'
     },
-    image: {
-        width: '100%',
-        height: '100%',
-        borderRadius: SIZES.radius
-    },
+    image: 
+        { 
+            width: '100%', height: '96%', 
+            borderRadius: SIZES.base, alignItems: 'center',
+             justifyContent: 'center',alignSelf:'center'
+            },
+    
     right: {
         flex: 1,
         padding: 4

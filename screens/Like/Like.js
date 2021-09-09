@@ -10,6 +10,7 @@ import Button from '../../components/Container/Button';
 import { showMessage } from "react-native-flash-message";
 
 import ShoppingCartIcon from '../../components/ShoppingCartIcon';
+import { BASE_URL } from './../../Base';
 const Like = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [wish, setWish] = useState([]);
@@ -38,7 +39,7 @@ const Like = ({ navigation }) => {
       redirect: 'follow'
     };
     
-    fetch("https://bhanumart.vitsol.in/api/get_cart_detail", requestOptionscar)
+    fetch(BASE_URL+"get_cart_detail", requestOptionscar)
     .then(response => response.json())
     .then((responseJson) => {
         if (responseJson.responce === true) {
@@ -61,7 +62,7 @@ const Like = ({ navigation }) => {
       redirect: 'follow'
     };
 
-    fetch("https://bhanumart.vitsol.in/api/get_wishlist_detail", requestOptionsw)
+    fetch(BASE_URL+"get_wishlist_detail", requestOptionsw)
       .then(response => response.json())
       .then(result => {
         if (result.responce === true) {
@@ -94,7 +95,7 @@ const Like = ({ navigation }) => {
       redirect: 'follow'
     };
 
-    fetch("https://bhanumart.vitsol.in/api/add_to_cart", requestOptionsadd)
+    fetch(BASE_URL+"add_to_cart", requestOptionsadd)
       .then(response => response.json())
       .then((responseJson) => {
         if (responseJson.responce === true) {
@@ -119,7 +120,7 @@ const Like = ({ navigation }) => {
       redirect: 'follow'
     };
 
-    fetch("https://bhanumart.vitsol.in/api/remove_wishlist_item", requestOptionsrw)
+    fetch(BASE_URL+"remove_wishlist_item", requestOptionsrw)
       .then(response => response.json())
       .then((responseJson) => {
         if (responseJson.responce === true) {

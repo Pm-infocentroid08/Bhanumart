@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import * as Location from 'expo-location'
 import Loader from './../Loader';
 import Geocoder from 'react-native-geocoding';
+import { BASE_URL } from './../../Base';
 // create a component
 
 const AddressPage = ({ navigation }) => {
@@ -39,7 +40,7 @@ const AddressPage = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_profile", requestOptions)
+        fetch(BASE_URL+"get_profile", requestOptions)
             .then(response => response.json())
             .then(result => setUsers(result.data))
             .catch(error => console.log('error', error))
@@ -61,7 +62,7 @@ const AddressPage = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_address", requestOptionsa)
+        fetch(BASE_URL+"get_address", requestOptionsa)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {
@@ -87,7 +88,7 @@ const AddressPage = ({ navigation }) => {
           redirect: 'follow'
         };
         
-        fetch("https://bhanumart.vitsol.in/api/remove_shiping_addres", requestOptionsdelt)
+        fetch(BASE_URL+"remove_shiping_addres", requestOptionsdelt)
         .then(response => response.json())
         .then(result => {
             if (result.responce === true) {

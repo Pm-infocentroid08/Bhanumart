@@ -21,7 +21,8 @@ import { FontAwesome,MaterialIcons } from 'react-native-vector-icons'
 import * as Permissions from 'expo-permissions';
 import * as Notifications from 'expo-notifications';                   
 import PhoneInput from "react-native-phone-number-input";
-
+import { BASE_URL } from './../Base';
+import Constants from 'expo-constants';
 const Register = (props) => {
   const [userFirstName, setUserFirstName] = useState('');
   const [userLastName, setUserLastName] = useState('');
@@ -40,7 +41,7 @@ const Register = (props) => {
   const [mobileVerifyClick,setMobileVerifyClick] = useState(false);
   const [mobileOtoVerified,setMobileOtpVerified] = useState(true);
   const [disbled,setDisabled]= useState(true);
-
+console.log(tokens)
   const [
     isRegistraionSuccess,
     setIsRegistraionSuccess
@@ -55,21 +56,37 @@ const Register = (props) => {
   const mobileInputRef = createRef();
   
   useEffect(()=>{
-    registerForPushNotification()
-    .then(token=>setToken(token))
-    .catch(err=>console.error(err))
+    registerForPushNotificationsAsync().then(token => setToken(token))
+    .catch(err=>console.error(err));
   },[])
-  async function registerForPushNotification(){
+  async function registerForPushNotificationsAsync() {
     let token;
-    const {status} =  await Permissions.getAsync(Permissions.NOTIFICATIONS);
-    if(status!='granted'){
-      const {status} =  await Permissions.getAsync(Permissions.NOTIFICATIONS); 
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      alert('Must use physical device for Push Notifications');
     }
-    if(status!='granted'){
-      alert('Failed to get push token.');
-      return;
+  
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,        
+vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
     }
-    token =(await Notifications.getExpoPushTokenAsync()).data;
+  
     return token;
   }
   const showToastWithGravity = (msg) => {
@@ -80,21 +97,7 @@ const Register = (props) => {
     );
 };
 
-function mobileNumber(text) {
-  
-  if (text[0]<6) {
-    setErrortext('Enter Valid Mobile Number');
-  }
-  else if(text.length>9) {
-    setErrortext('Mobile Number should not be greater than 10 digit');
-  }
-  else if(text[0]>5 && text.length<10) {
-    setUserContact(text);
-  }
-  else {
-    setUserContact('');
-  }
-}
+
   const handleSubmitButton = () => {
     setErrortext('');
     if (!userFirstName) {
@@ -143,18 +146,18 @@ function mobileNumber(text) {
             redirect: 'follow'
           };
 
-    fetch('https://bhanumart.vitsol.in/api/registration',requestOptions )
+    fetch(BASE_URL+'registration',requestOptions )
       .then((response) => response.json())
       .then((responseJson) => {
         //Hide Loader
         setLoading(false);
         
         // If server response message same as Data Matched
-        if (responseJson.responce === true) {
-          setUser(responseJson.massage);
+        if (responseJson.response === true) {
+          setUser(responseJson.data);
           setIsRegistraionSuccess(true);          
           showToastWithGravity(
-            'Registration Successful. Please Login!'
+            'Registration Successful. Please Verify your Account!'
           );
         } else {
           setErrortext(responseJson.error);
@@ -167,16 +170,7 @@ function mobileNumber(text) {
       });
   };
   
-  const verifyEmailOtp=()=>{
-    alert('Email Otp click');
-    setEmailVerifyClick(false);
-    setEmailVerified(true)
-  }
-  const verifyMobileOtp=()=>{
-    alert('Mobile Otp click');
-    setMobileVerifyClick(false);
-    setMobileOtpVerified(true)
-  }
+  
   if (isRegistraionSuccess) {
     return (
       <View
@@ -288,12 +282,10 @@ function mobileNumber(text) {
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(e) => {
-                mobileNumber(e);
-                setMobileOtpVerified(false)
-                }}
+              onChangeText={(e) =>setUserContact(e)}
               placeholder="Enter Mobile Number"
               placeholderTextColor="#8b9cb5"
+              maxLength={10}
               keyboardType="numeric"
               ref={ageInputRef}
               onSubmitEditing={() =>

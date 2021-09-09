@@ -7,6 +7,7 @@ import { COLORS, SIZES, FONTS } from './../../constants/theme';
 import { FontAwesome5 } from 'react-native-vector-icons'
 import * as ImagePicker from 'expo-image-picker';
 import { showMessage } from "react-native-flash-message";
+import { BASE_URL } from './../../Base';
 // create a component
 const FormInput = ({ labelValue, placeholderText, ...rest }) => {
   return (
@@ -48,7 +49,7 @@ const ProfileUpdate = ({navigation}) => {
       redirect: 'follow'
     };
 
-    fetch("https://bhanumart.vitsol.in/api/get_profile", requestOptions)
+    fetch(BASE_URL+"get_profile", requestOptions)
       .then(response => response.json())
       .then(result => {
         setUsers(result.data);
@@ -83,7 +84,7 @@ const ProfileUpdate = ({navigation}) => {
       body: formdataup,
       redirect: 'follow'
     };
-    fetch("https://bhanumart.vitsol.in/api/updateprofile", requestOptionsup)
+    fetch(BASE_URL+"updateprofile", requestOptionsup)
     .then(response => response.json())
     .then(result => {
       if (result.responce === true) {

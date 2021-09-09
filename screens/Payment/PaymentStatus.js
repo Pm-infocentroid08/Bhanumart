@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { COLORS, SIZES } from './../../constants/theme';
 import Loader from '../Loader';
+import { BASE_URL } from './../../Base';
 const PaymentStatus = ({ route, navigation }) => {
     const [status, setStatus] = useState(false);
     const [data, setData] = useState('');
@@ -26,7 +27,7 @@ const PaymentStatus = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/payment_status", requestOptions)
+        fetch(BASE_URL+"payment_status", requestOptions)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {

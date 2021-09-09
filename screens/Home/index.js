@@ -12,6 +12,8 @@ import { showMessage } from "react-native-flash-message";
 import Banner from './banner';
 import { TabRouter, useIsFocused } from '@react-navigation/native'
 import { Picker as SelectPicker} from '@react-native-picker/picker'
+import ModalDropdown from 'react-native-modal-dropdown';
+import { BASE_URL } from './../../Base';
 // create a component
 
 const wait = (timeout) => {
@@ -73,7 +75,7 @@ const Home = ({ navigation }) => {
                 redirect: 'follow'
             };
 
-            fetch("https://bhanumart.vitsol.in/api/add_to_cart", requestOptions)
+            fetch(BASE_URL+"add_to_cart", requestOptions)
                 .then(response => response.json())
                 .then((responseJson) => {
                     if (responseJson.responce === true) {
@@ -111,7 +113,7 @@ const Home = ({ navigation }) => {
                 redirect: 'follow'
             };
 
-            fetch("https://bhanumart.vitsol.in/api/add_to_cart", requestOptions)
+            fetch(BASE_URL+"add_to_cart", requestOptions)
                 .then(response => response.json())
                 .then((responseJson) => {
                     if (responseJson.responce === true) {
@@ -148,7 +150,7 @@ const Home = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_cart_detail", requestOptionscar)
+        fetch(BASE_URL+"get_cart_detail", requestOptionscar)
             .then(response => response.json())
             .then((responseJson) => {
                 if (responseJson.responce === true) {
@@ -168,7 +170,7 @@ const Home = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_new_listing_products", requestOptionsP)
+        fetch(BASE_URL+"get_new_listing_products", requestOptionsP)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {
@@ -193,7 +195,7 @@ const Home = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_featured_products", requestOptionsF)
+        fetch(BASE_URL+"get_featured_products", requestOptionsF)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {
@@ -218,7 +220,7 @@ const Home = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_lowbudget_products", requestOptionsB)
+        fetch(BASE_URL+"get_lowbudget_products", requestOptionsB)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {
@@ -243,7 +245,7 @@ const Home = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_hotdeal_products", requestOptionsT)
+        fetch(BASE_URL+"get_hotdeal_products", requestOptionsT)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {
@@ -281,6 +283,8 @@ const Home = ({ navigation }) => {
 
 
     }, [isFocused, navigation])
+
+    
 
     function renderBottom() {
         const renderItem = ({ item }) => {

@@ -7,6 +7,7 @@ import FormButton from '../../components/Form/FormButton';
 import { COLORS, SIZES } from './../../constants/theme';
 import Loader from '../Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BASE_URL } from './../../Base';
 // create a component
 const ForgotPassword = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -32,7 +33,7 @@ const ForgotPassword = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/forgotpassword", requestOptions)
+        fetch(BASE_URL+"forgotpassword", requestOptions)
         .then((response) => response.json())
         .then((responseJson) => {
           //Hide Loader

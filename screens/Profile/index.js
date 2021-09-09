@@ -11,6 +11,7 @@ import { FontAwesome5 } from 'react-native-vector-icons'
 import Loader from '../Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TabRouter, useIsFocused } from '@react-navigation/native'
+import { BASE_URL } from './../../Base';
 // create a component
 
 const Profile = ({ navigation }) => {
@@ -33,7 +34,7 @@ const Profile = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_profile", requestOptions)
+        fetch(BASE_URL+"get_profile", requestOptions)
             .then(response => response.json())
             .then(result => setUsers(result.data))
             .catch(error => console.log('error', error))

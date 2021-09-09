@@ -9,6 +9,7 @@ import { FontAwesome,MaterialIcons } from 'react-native-vector-icons'
 import { Alert } from 'react-native';
 import * as Location from 'expo-location'
 import Loader from '../Loader';
+import { BASE_URL } from './../../Base';
 // create a component
 const AddressEdit = ({ navigation }) => {
     const [users, setUsers] = useState('');
@@ -44,7 +45,7 @@ const AddressEdit = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_profile", requestOptions)
+        fetch(BASE_URL+"get_profile", requestOptions)
             .then(response => response.json())
             .then(result => setUsers(result.data))
             .catch(error => console.log('error', error))
@@ -65,7 +66,7 @@ const AddressEdit = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_address", requestOptionsa)
+        fetch(BASE_URL+"get_address", requestOptionsa)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {
@@ -92,7 +93,7 @@ const AddressEdit = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_delivery_area", requestOptionsdel)
+        fetch(BASE_URL+"get_delivery_area", requestOptionsdel)
         .then(response => response.json())
         .then(result => {
             if (result.responce === true) {
@@ -117,7 +118,7 @@ const AddressEdit = ({ navigation }) => {
           redirect: 'follow'
         };
         
-        fetch("https://bhanumart.vitsol.in/api/remove_shiping_addres", requestOptionsdelt)
+        fetch(BASE_URL+"remove_shiping_addres", requestOptionsdelt)
         .then(response => response.json())
         .then(result => {
             if (result.responce === true) {

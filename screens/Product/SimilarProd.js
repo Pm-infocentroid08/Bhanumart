@@ -10,6 +10,7 @@ import ShoppingCartIcon from '../../components/ShoppingCartIcon';
 import { showMessage } from "react-native-flash-message";
 import { Picker as SelectPicker } from '@react-native-picker/picker'
 import WishlistIcon from './../../components/WishlistIcon';
+import { BASE_URL } from './../../Base';
 
 // create a component
 
@@ -37,7 +38,7 @@ const SimilarProduct = ({ route, navigation }) => {
           redirect: 'follow'
         };
         
-        fetch("https://bhanumart.vitsol.in/api/get_cart_detail", requestOptionscar)
+        fetch(BASE_URL+"get_cart_detail", requestOptionscar)
         .then(response => response.json())
         .then((responseJson) => {
             if (responseJson.responce === true) {
@@ -61,7 +62,7 @@ const SimilarProduct = ({ route, navigation }) => {
             body: formdatap,
             redirect: 'follow'
         };
-        fetch("https://bhanumart.vitsol.in/api/get_product", requestOptionsp)
+        fetch(BASE_URL+"get_product", requestOptionsp)
             .then(response => response.json())
             .then(result => { setData(result.data), setMdata(result.data) })
             .catch(error => console.log('error', error))
@@ -95,7 +96,7 @@ const SimilarProduct = ({ route, navigation }) => {
                 redirect: 'follow'
             };
     
-            fetch("https://bhanumart.vitsol.in/api/add_to_cart", requestOptionsadd)
+            fetch(BASE_URL+"add_to_cart", requestOptionsadd)
                 .then(response => response.json())
                 .then((responseJson) => {
                     if (responseJson.responce === true) {
@@ -130,7 +131,7 @@ const SimilarProduct = ({ route, navigation }) => {
                 redirect: 'follow'
             };
     
-            fetch("https://bhanumart.vitsol.in/api/add_to_cart", requestOptionsadd)
+            fetch(BASE_URL+"add_to_cart", requestOptionsadd)
                 .then(response => response.json())
                 .then((responseJson) => {
                     if (responseJson.responce === true) {

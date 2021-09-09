@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux'
 
 import { Picker as SelectPicker } from '@react-native-picker/picker'
 import ShoppingCartIcon from '../../components/ShoppingCartIcon';
+import { BASE_URL } from './../../Base';
 // create a component
 const SearchPage = ({ navigation }) => {
     const [isLoading, setLoading] = useState(true);
@@ -43,7 +44,7 @@ const SearchPage = ({ navigation }) => {
             body: formdatap,
             redirect: 'follow'
         };
-        fetch("https://bhanumart.vitsol.in/api/get_product", requestOptionsp)
+        fetch(BASE_URL+"get_product", requestOptionsp)
             .then(response => response.json())
             .then(result => { setFilteredDataSource(result.data), setMasterDataSource(result.data) })
             .catch(error => console.log('error', error))
@@ -64,7 +65,7 @@ const SearchPage = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_cart_detail", requestOptionscar)
+        fetch(BASE_URL+"get_cart_detail", requestOptionscar)
             .then(response => response.json())
             .then((responseJson) => {
                 if (responseJson.responce === true) {
@@ -99,7 +100,7 @@ const SearchPage = ({ navigation }) => {
                 redirect: 'follow'
             };
 
-            fetch("https://bhanumart.vitsol.in/api/add_to_cart", requestOptionsadd)
+            fetch(BASE_URL+"add_to_cart", requestOptionsadd)
                 .then(response => response.json())
                 .then((responseJson) => {
                     if (responseJson.responce === true) {
@@ -138,7 +139,7 @@ const SearchPage = ({ navigation }) => {
                 redirect: 'follow'
             };
 
-            fetch("https://bhanumart.vitsol.in/api/add_to_cart", requestOptionsadd)
+            fetch(BASE_URL+"add_to_cart", requestOptionsadd)
                 .then(response => response.json())
                 .then((responseJson) => {
                     if (responseJson.responce === true) {
@@ -548,9 +549,16 @@ item.stock_status === '0' ? <Text style={styles.ostock}>Out of Stock</Text> :
 
 
             {search ? <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', paddingVertical: SIZES.base, paddingHorizontal: SIZES.padding }}>
-                <Text style={{ ...FONTS.body3, fontWeight: '700', color: COLORS.gray }}>We have found {filteredDataSource.length} results</Text>
+               {
+                filteredDataSource ? <Text style={{ ...FONTS.body3, fontWeight: '700', color: COLORS.gray }}>We have found {filteredDataSource.length} results</Text>:
+                <Text style={{ ...FONTS.body3, fontWeight: '700', color: COLORS.gray }}>We have found 0 results</Text>
+               } 
             </TouchableOpacity> : <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', paddingVertical: SIZES.base, paddingHorizontal: SIZES.padding }}>
-                <Text style={{ ...FONTS.body3, fontWeight: '700', color: COLORS.gray }}>We have {filteredDataSource.length} Items</Text>
+            {
+                filteredDataSource ? <Text style={{ ...FONTS.body3, fontWeight: '700', color: COLORS.gray }}>We have {filteredDataSource.length} Items</Text>:
+                <Text style={{ ...FONTS.body3, fontWeight: '700', color: COLORS.gray }}>We have 0 Items</Text>
+               } 
+                
             </TouchableOpacity>}
             {isLoading ? <ActivityIndicator size="large" color="orange" /> : <FlatList
                 data={filteredDataSource}

@@ -19,6 +19,7 @@ import { COLORS, FONTS, SIZES } from '../../constants';
 import { SwipeListView } from 'react-native-swipe-list-view'
 import Loader from '../Loader';
 import { useIsFocused } from '@react-navigation/native'
+import { BASE_URL } from './../../Base';
 // create a component
 
 
@@ -31,7 +32,7 @@ const Cart = ({ navigation }) => {
   const userInfo = useSelector(state => state.users)
   const isFocused = useIsFocused();
   const [vid, setVid] = useState(null);
-
+ 
   const dispatch = useDispatch();
   const removeItemFromCart = item =>
     dispatch({
@@ -66,7 +67,7 @@ const Cart = ({ navigation }) => {
       redirect: 'follow'
     };
 
-    fetch("https://bhanumart.vitsol.in/api/get_cart_detail", requestOptions)
+    fetch(BASE_URL+"get_cart_detail", requestOptions)
       .then(response => response.json())
       .then(result => {
         if (result.responce === true) {
@@ -95,7 +96,7 @@ const Cart = ({ navigation }) => {
       redirect: 'follow'
     };
     
-            fetch("https://bhanumart.vitsol.in/api/remove_cart_item", requestOptions)
+            fetch(BASE_URL+"remove_cart_item", requestOptions)
               .then(response => response.json())
               .then((responseJson) => {
 
@@ -119,7 +120,7 @@ const Cart = ({ navigation }) => {
       let sum = Number(items[i].price * items[i].qty)
       total = total + sum
     }
-    return <Text style={styles.totText}>Total : Rs.&nbsp;{total}</Text>
+    return <Text style={[styles.totText,{fontSize:15}]}>Total : Rs.&nbsp;{total.toFixed(2)}</Text>
   }
 
   const getTotalSave = () => {
@@ -129,7 +130,7 @@ const Cart = ({ navigation }) => {
       let sum = Number(items[i].varients.product_price * items[i].qty)- Number(items[i].varients.sale_price * items[i].qty)
       total = total + sum
     }
-    return <Text style={{color:'green',textTransform:'capitalize',fontWeight:'bold',fontSize:14}}>Discount on MRP : Rs.&nbsp;{total}</Text>
+    return <Text style={{color:'green',textTransform:'capitalize',fontWeight:'bold',fontSize:14}}>Discount Price: Rs.&nbsp;{total.toFixed(2)}</Text>
   }
 
   useEffect(() => {
@@ -152,7 +153,7 @@ const Cart = ({ navigation }) => {
       body: formdataadd,
       redirect: 'follow'
     };
-    fetch("https://bhanumart.vitsol.in/api/update_cart_item_qty", requestOptionsadd)
+    fetch(BASE_URL+"update_cart_item_qty", requestOptionsadd)
       .then(response => response.json())
       .then(result => {
         if (result.responce === true) {
@@ -177,7 +178,7 @@ const Cart = ({ navigation }) => {
         redirect: 'follow'
     };
 
-    fetch("https://bhanumart.vitsol.in/api/add_to_wishlist", requestOptions)
+    fetch(BASE_URL+"add_to_wishlist", requestOptions)
     .then(response => response.json())
     .then((responseJson) => {
         if (responseJson.responce === true) {
@@ -210,6 +211,7 @@ const Cart = ({ navigation }) => {
                   <View style={styles.bookItemContainer}>
                     <View style={styles.ImCont}>
                       <View style={styles.imgBox}>
+                      
                         <Image source={{ uri: data.item.image }} style={styles.thumbnail}
                           resizeMode='contain'
                         />
@@ -338,9 +340,9 @@ const Cart = ({ navigation }) => {
       <ScrollView style={{ flex: 1 }}>
         {renderCart()}
       </ScrollView>
-      {product.length !== undefined ? (<View style={{ paddingHorizontal:10, backgroundColor: '#fff', flex: 1, maxHeight: 75, borderTopLeftRadius: 35, borderTopRightRadius: 35 }}>
+      {product.length !== undefined ? (<View style={{ paddingHorizontal:10, backgroundColor: '#fff', flex: 1, maxHeight: 75}}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 15 }}>
-          <Text style={{ fontWeight: 'bold', textAlign: 'center', ...FONTS.h1, textTransform: 'uppercase', color: 'gray' }}>{getTotalSave()} </Text>
+          <Text style={{ fontWeight: 'bold', textAlign: 'center', ...FONTS.h1, textTransform: 'uppercase', color: 'gray'}}>{getTotalSave()} </Text>
           <Text style={{ fontWeight: 'bold', textAlign: 'center', ...FONTS.h1, textTransform: 'uppercase', color: 'tomato' }}>{getTotal()} </Text>
         </View>
         <TouchableOpacity style={{height:35,backgroundColor:COLORS.black,borderRadius:5,

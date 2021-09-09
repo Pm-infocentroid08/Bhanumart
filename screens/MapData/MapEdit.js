@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
     View, Text, StyleSheet, VirtualizedList, TouchableOpacity, ScrollView,
-    TextInput, Platform
+    TextInput, Platform,Image
 } from 'react-native';
 
 import { useRoute } from '@react-navigation/native'
@@ -15,6 +15,7 @@ import PlaceRow from './PlaceRow';
 import * as Location from 'expo-location'
 import { Ionicons, MaterialIcons } from 'react-native-vector-icons'
 import Geocoder from 'react-native-geocoding'
+import { BASE_URL } from './../../Base';
 
 // create a component
 const MapHomeEdit = ({ route,navigation }) => {
@@ -119,7 +120,7 @@ const MapHomeEdit = ({ route,navigation }) => {
             body: formdata,
             redirect: 'follow'
         };
-        fetch('https://bhanumart.vitsol.in/api/update_shiping_addres', requestOptions)
+        fetch(BASE_URL+'update_shiping_addres', requestOptions)
             .then((response) => response.json())
             .then((responseJson) => {
 
@@ -185,37 +186,13 @@ const MapHomeEdit = ({ route,navigation }) => {
                     pitchEnabled={true}
                     showsMyLocationButton={true}
                     style={styles.map}
-                    moveOnMarkerPress={true}
-                >                   
-                    <Marker
-                        coordinate={{
-                            latitude: location.lat || location.latitude,
-                        longitude: location.lng || location.longitude,
-                        }}
-                        onDragEnd={(e) => {onRegionChange(e.nativeEvent.coordinate)}}
-                        draggable
-                    >
-                    <Callout tooltip>
-                    {
-                        Platform.OS==='android'?
-                        <View style={{flex:1,marginHorizontal:20,backgroundColor:COLORS.black,
-                    padding:10,borderRadius:10,justifyContent:'center',marginTop:100,width:'50%',paddingVertical:10,height:100}}>
-                           <Text style={{color:COLORS.white}}>My Location</Text>
-                           <Text style={{color:COLORS.white,width:'100%'}}>{JSON.stringify(city)}</Text>
-                       </View> :
-                       <View style={{flex:1,padding:5,backgroundColor:COLORS.black,marginHorizontal:10,borderRadius:10,
-                       width:'50%',alignSelf:'center',height:90}}>
-                           <Text style={{color:COLORS.white}}>My Location</Text>
-                           <Text style={{color:COLORS.white,width:'100%'}}>{JSON.stringify(city)}</Text>
-                       </View> 
-                    }
-                    
-                    </Callout>
-                      
-                    </Marker>
-                    
-
-                </MapView>
+                    //moveOnMarkerPress={true}
+                    onRegionChangeComplete={onRegionChange}
+                />   
+                 <View style={styles.markerFixed}>
+                        <Image style={styles.marker} source={require("../../assets/images/marker.png")} resizeMode='contain'/>
+                </View>                
+                   
                     {
                         Platform.OS==='android'?
                         <TouchableOpacity style={{width:50,height:50,backgroundColor:'grba(0,0,0,0.9)',position:'absolute',right:10,
@@ -285,7 +262,37 @@ const MapHomeEdit = ({ route,navigation }) => {
         </View>
     );
 };
+/*
+ <Marker
+                        coordinate={{
+                            latitude: location.lat || location.latitude,
+                        longitude: location.lng || location.longitude,
+                        }}
+                        onDragEnd={(e) => {onRegionChange(e.nativeEvent.coordinate)}}
+                        draggable
+                    >
+                    <Callout tooltip>
+                    {
+                        Platform.OS==='android'?
+                        <View style={{flex:1,marginHorizontal:20,backgroundColor:COLORS.black,
+                    padding:10,borderRadius:10,justifyContent:'center',marginTop:100,width:'50%',paddingVertical:10,height:100}}>
+                           <Text style={{color:COLORS.white}}>My Location</Text>
+                           <Text style={{color:COLORS.white,width:'100%'}}>{JSON.stringify(city)}</Text>
+                       </View> :
+                       <View style={{flex:1,padding:5,backgroundColor:COLORS.black,marginHorizontal:10,borderRadius:10,
+                       width:'50%',alignSelf:'center',height:90}}>
+                           <Text style={{color:COLORS.white}}>My Location</Text>
+                           <Text style={{color:COLORS.white,width:'100%'}}>{JSON.stringify(city)}</Text>
+                       </View> 
+                    }
+                    
+                    </Callout>
+                      
+                    </Marker>
+                    
 
+                </MapView>
+*/
 // define your styles
 const styles = StyleSheet.create({
     container: {
@@ -367,7 +374,20 @@ const styles = StyleSheet.create({
         backgroundColor: '#efefef',
         height: 1
     },
-});
+    markerFixed: {
+        position: 'absolute',
+        width: '100%',
+        height: SIZES.height * 0.65,
+        flex: 1,
+        maxHeight: SIZES.height * 0.65,
+        alignItems:'center',
+        justifyContent:'center'
+      },
+      marker: {
+        height: 48,
+        width: 48
+      },
+      });
 
 //make this component available to the app
 export default MapHomeEdit;

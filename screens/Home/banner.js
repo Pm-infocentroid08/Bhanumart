@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, ActivityIndicator, FlatList, Alert, ScrollView,
 import { COLORS, FONTS, SIZES } from '../../constants/index'
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { useNavigation } from '@react-navigation/native';
+import { BASE_URL } from './../../Base';
 
 // create a component
 const Banner = () => {
@@ -24,7 +25,7 @@ const Banner = () => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_banner", requestOptions)
+        fetch(BASE_URL+"get_banner", requestOptions)
         .then(response => response.json())
         .then(result => {
             if (result.responce === true) {
@@ -46,7 +47,7 @@ const Banner = () => {
             headers: myHeadersb,
             redirect: 'follow'
         };
-        fetch("https://bhanumart.vitsol.in/api/get_slider_producttyp", requestOptionsb)
+        fetch(BASE_URL+"get_slider_producttyp", requestOptionsb)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {
@@ -70,7 +71,7 @@ const Banner = () => {
         };
 
 
-        fetch("https://bhanumart.vitsol.in/api/get_product_type", requestOptions)
+        fetch(BASE_URL+"get_product_type", requestOptions)
             .then(response => response.json())
             .then(result => setCategory(result.data))
             .catch(error => console.log('error', error))

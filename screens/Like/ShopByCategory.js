@@ -6,6 +6,7 @@ import { Ionicons, FontAwesome } from 'react-native-vector-icons'
 import HeaderBar from './../../components/HeaderBar/index';
 
 import { useNavigation } from '@react-navigation/native';
+import { BASE_URL } from './../../Base';
 // create a component
 const ListItem = ({ titleText, image, id, ...rest }) => {
     const [show, setShow] = React.useState(null);
@@ -22,7 +23,7 @@ const ListItem = ({ titleText, image, id, ...rest }) => {
             body: formdata,
             redirect: 'follow'
           };
-          fetch("https://bhanumart.vitsol.in/api/get_category", requestOptions)
+          fetch(BASE_URL+"get_category", requestOptions)
             .then(response => response.json())
             .then(result => setDatac(result.data))
             .catch(error => console.log('error', error))
@@ -88,7 +89,7 @@ const ShopbyCategory = ({ navigation }) => {
             headers: myHeaders,
             redirect: 'follow'
           };
-        fetch("https://bhanumart.vitsol.in/api/get_product_type", requestOptions)
+        fetch(BASE_URL+"get_product_type", requestOptions)
             .then(response => response.json())
             .then(result => setData(result.data))
             .catch(error => console.log('error', error))

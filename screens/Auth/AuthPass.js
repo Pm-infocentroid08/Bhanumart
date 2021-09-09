@@ -18,6 +18,7 @@ import Loader from '../Loader';
 import { COLORS } from './../../constants/theme';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BASE_URL } from './../../Base';
 
 const PasswordConfirm = ({ navigation }) => {
     const [userCPassword, setUserCPassword] = useState('');
@@ -69,7 +70,7 @@ const PasswordConfirm = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch('https://bhanumart.vitsol.in/api/update_password', requestOptions)
+        fetch(BASE_URL+'update_password', requestOptions)
             .then((response) => response.json())
             .then((responseJson) => {
                 //Hide Loader

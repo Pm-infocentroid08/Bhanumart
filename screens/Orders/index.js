@@ -7,6 +7,7 @@ import Button from './../../components/Container/Button';
 import { Ionicons, FontAwesome } from 'react-native-vector-icons'
 import { showMessage } from "react-native-flash-message";
 import { useSelector } from 'react-redux'
+import { BASE_URL } from './../../Base';
 
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -35,7 +36,7 @@ const Orders = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/order_list", requestOptions)
+        fetch(BASE_URL+"order_list", requestOptions)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {

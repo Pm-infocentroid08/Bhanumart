@@ -18,6 +18,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Loader from './loader';
+import { BASE_URL } from './../../Base';
 
 const Login = ({navigation}) => {
   const [userEmail, setUserEmail] = useState('');
@@ -50,7 +51,7 @@ const Login = ({navigation}) => {
         redirect: 'follow'
       };
 
-    fetch('https://bhanumart.vitsol.in/api/login', requestOptions)
+    fetch(BASE_URL+'login', requestOptions)
       .then((response) => response.json())
       .then((responseJson) => {
         //Hide Loader

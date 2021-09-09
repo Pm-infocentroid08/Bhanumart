@@ -10,6 +10,7 @@ import ShoppingCartIcon from '../../components/ShoppingCartIcon';
 import { showMessage } from "react-native-flash-message";
 import { Picker as SelectPicker } from '@react-native-picker/picker'
 import WishlistIcon from './../../components/WishlistIcon';
+import { BASE_URL } from './../../Base';
 // create a component
 
 const ProductList = ({ navigation }) => {
@@ -34,7 +35,7 @@ const ProductList = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_product_type", requestOptions)
+        fetch(BASE_URL+"get_product_type", requestOptions)
             .then(response => response.json())
             .then(result => setFild(result.data))
             .catch(error => console.log('error', error))
@@ -55,7 +56,7 @@ const ProductList = ({ navigation }) => {
           redirect: 'follow'
         };
         
-        fetch("https://bhanumart.vitsol.in/api/get_cart_detail", requestOptionscar)
+        fetch(BASE_URL+"get_cart_detail", requestOptionscar)
         .then(response => response.json())
         .then((responseJson) => {
             if (responseJson.responce === true) {
@@ -78,7 +79,7 @@ const ProductList = ({ navigation }) => {
             body: formdatap,
             redirect: 'follow'
         };
-        fetch("https://bhanumart.vitsol.in/api/get_filtered_product", requestOptionsp)
+        fetch(BASE_URL+"get_filtered_product", requestOptionsp)
             .then(response => response.json())
             .then(result => { setData(result.data), setMdata(result.data) })
             .catch(error => console.log('error', error))
@@ -122,7 +123,7 @@ const ProductList = ({ navigation }) => {
                 redirect: 'follow'
             };
     
-            fetch("https://bhanumart.vitsol.in/api/add_to_cart", requestOptionsadd)
+            fetch(BASE_URL+"add_to_cart", requestOptionsadd)
                 .then(response => response.json())
                 .then((responseJson) => {
                     if (responseJson.responce === true) {
@@ -156,7 +157,7 @@ const ProductList = ({ navigation }) => {
                 redirect: 'follow'
             };
     
-            fetch("https://bhanumart.vitsol.in/api/add_to_cart", requestOptionsadd)
+            fetch(BASE_URL+"add_to_cart", requestOptionsadd)
                 .then(response => response.json())
                 .then((responseJson) => {
                     if (responseJson.responce === true) {

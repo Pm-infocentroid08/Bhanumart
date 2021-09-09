@@ -20,12 +20,17 @@ import { ADD_USER } from '../ReduxCart/CartItem'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from './Loader';
 import { COLORS } from './../constants/theme';
+import VerifyUser from './OtpVerify';
+import { BASE_URL } from './../Base';
 
 const Login = ({ navigation }) => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
+  const [user, setUser] = useState('');
+  const [type, setType] = useState(0);
+
   const dispatch = useDispatch()
   const passwordInputRef = createRef();
 
@@ -52,7 +57,7 @@ const Login = ({ navigation }) => {
       redirect: 'follow'
     };
 
-    fetch('https://bhanumart.vitsol.in/api/login', requestOptions)
+    fetch(BASE_URL+'login', requestOptions)
       .then((response) => response.json())
       .then((responseJson) => {
         //Hide Loader
@@ -66,7 +71,8 @@ const Login = ({ navigation }) => {
           navigation.replace('Drawer');
         } else {
           setErrortext(responseJson.error);
-          Alert.alert('Please check your email id or password');
+          setUser(responseJson.data||'');
+          setType(responseJson.type);        
         }
       })
       .catch((error) => {
@@ -97,7 +103,11 @@ const Login = ({ navigation }) => {
 
         </View>
         <View>
-
+        {errortext != '' ? (
+              <Text style={[styles.errorTextStyle,{paddingVertical:5}]}>
+                {errortext}
+              </Text>
+            ) : null}
           <KeyboardAvoidingView enabled>
 
             <View style={styles.SectionStyle}>
@@ -134,11 +144,16 @@ const Login = ({ navigation }) => {
                 returnKeyType="next"
               />
             </View>
-            {errortext != '' ? (
-              <Text style={styles.errorTextStyle}>
-                {errortext}
-              </Text>
-            ) : null}
+           
+            {
+              type === 1 ? 
+              <View style={{width:120,height:40,borderRadius:20,marginBottom:15,alignSelf:'center',backgroundColor:'green',justifyContent:'center',alignItems:'center'}}>
+              <TouchableOpacity onPress={() => navigation.navigate('Verify',{user})}>
+                <Text style={{color:COLORS.white,fontWeight:'bold'}}>Verify User</Text>
+              </TouchableOpacity>
+            </View>:<View/>
+            }
+            
             <View style={{height:20,justifyContent:'center',alignItems:'flex-end',marginRight:45}}>
               <TouchableOpacity onPress={()=>navigation.navigate('ForgotPass')}>
                 <Text style={{color:COLORS.bgcolor,fontWeight:'bold'}}>Forgot Password ?</Text>

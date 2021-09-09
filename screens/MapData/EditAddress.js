@@ -6,6 +6,7 @@ import HeaderBar from '../../components/HeaderBar';
 import Button from '../../components/Container/Button';
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../Loader';
+import { BASE_URL } from './../../Base';
 // create a component
 const EditAddress = ({ route,navigation }) => {
     function renderBody() {
@@ -91,7 +92,7 @@ const EditAddress = ({ route,navigation }) => {
                 body: formdata,
                 redirect: 'follow'
             };
-            fetch('https://bhanumart.vitsol.in/api/update_shiping_addres', requestOptions)
+            fetch(BASE_URL+'update_shiping_addres', requestOptions)
                 .then((response) => response.json())
                 .then((responseJson) => {
                     console.log(responseJson)

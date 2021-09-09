@@ -15,6 +15,7 @@ import ShoppingCartIcon from '../../components/ShoppingCartIcon';
 import { showMessage } from "react-native-flash-message";
 import { Picker as SelectPicker } from '@react-native-picker/picker'
 import WishlistIcon from '../../components/WishlistIcon';
+import { BASE_URL } from './../../Base';
 
 
 // create a component
@@ -53,7 +54,7 @@ const SubCategory = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_cart_detail", requestOptionscar)
+        fetch(BASE_URL+"get_cart_detail", requestOptionscar)
             .then(response => response.json())
             .then((responseJson) => {
                 if (responseJson.responce === true) {
@@ -78,7 +79,7 @@ const SubCategory = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_slider_product_type", requestOptionsb)
+        fetch(BASE_URL+"get_slider_product_type", requestOptionsb)
             .then(response => response.json())
             .then(result => setData(result.data))
             .catch(error => console.log('error', error))
@@ -95,7 +96,7 @@ const SubCategory = ({ route, navigation }) => {
             body: formdata,
             redirect: 'follow'
         };
-        fetch("https://bhanumart.vitsol.in/api/get_category", requestOptions)
+        fetch(BASE_URL+"get_category", requestOptions)
             .then(response => response.json())
             .then(result => setCatValue(result.data))
             .catch(error => console.log('error', error))
@@ -115,7 +116,7 @@ const SubCategory = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_filtered_product", requestOptionsP)
+        fetch(BASE_URL+"get_filtered_product", requestOptionsP)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {
@@ -150,7 +151,7 @@ const SubCategory = ({ route, navigation }) => {
                 redirect: 'follow'
             };
 
-            fetch("https://bhanumart.vitsol.in/api/add_to_cart", requestOptionsadd)
+            fetch(BASE_URL+"add_to_cart", requestOptionsadd)
                 .then(response => response.json())
                 .then((responseJson) => {
                     if (responseJson.responce === true) {
@@ -188,7 +189,7 @@ const SubCategory = ({ route, navigation }) => {
                 redirect: 'follow'
             };
 
-            fetch("https://bhanumart.vitsol.in/api/add_to_cart", requestOptionsadd)
+            fetch(BASE_URL+"add_to_cart", requestOptionsadd)
                 .then(response => response.json())
                 .then((responseJson) => {
                     if (responseJson.responce === true) {

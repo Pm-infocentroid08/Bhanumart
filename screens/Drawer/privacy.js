@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { FONTS, SIZES, COLORS } from '../../constants/index'
+import { BASE_URL } from './../../Base';
 // create a component
 const Privacy = () => {
     const [isLoading, setLoading] = useState(true);
@@ -16,7 +17,7 @@ const Privacy = () => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/privacy_page", requestOptions)
+        fetch(BASE_URL+"privacy_page", requestOptions)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {

@@ -11,6 +11,7 @@ import {  useSelector } from 'react-redux'
 import ShoppingCartIcon from '../../components/ShoppingCartIcon';
 import { showMessage } from "react-native-flash-message";
 import WishlistIcon from './../../components/WishlistIcon';
+import { BASE_URL } from './../../Base';
 
 // create a component
 const ProductDetail = ({ route, navigation }) => {
@@ -58,7 +59,7 @@ const ProductDetail = ({ route, navigation }) => {
           redirect: 'follow'
         };
         
-        fetch("https://bhanumart.vitsol.in/api/get_cart_detail", requestOptionscar)
+        fetch(BASE_URL+"get_cart_detail", requestOptionscar)
         .then(response => response.json())
         .then((responseJson) => {
             if (responseJson.responce === true) {
@@ -83,7 +84,7 @@ const ProductDetail = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_reviews", requestOptionsrat)
+        fetch(BASE_URL+"get_reviews", requestOptionsrat)
         .then(response => response.json())
         .then((responseJson) => {
             if (responseJson.responce === true) {
@@ -115,7 +116,7 @@ const ProductDetail = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/add_to_cart", requestOptionsadd)
+        fetch(BASE_URL+"add_to_cart", requestOptionsadd)
             .then(response => response.json())
             .then((responseJson) => {
                 if (responseJson.responce === true) {
@@ -149,7 +150,7 @@ const ProductDetail = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/add_to_wishlist", requestOptions)
+        fetch(BASE_URL+"add_to_wishlist", requestOptions)
             .then(response => response.json())
             .then((responseJson) => {
                 if (responseJson.responce === true) {
@@ -180,7 +181,7 @@ const ProductDetail = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/review_porduct_check", requestOptionsck)
+        fetch(BASE_URL+"review_porduct_check", requestOptionsck)
             .then(response => response.json())
             .then((responseJson) => {
                 if (responseJson.responce === true) {

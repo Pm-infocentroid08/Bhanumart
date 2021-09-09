@@ -10,6 +10,7 @@ import {
 import HeaderBar from '../../components/HeaderBar';
 import { useSelector, useDispatch } from 'react-redux'
 import { FontAwesome5 } from 'react-native-vector-icons'
+import { BASE_URL } from './../../Base';
 const Billing = ({ navigation }) => {
     const [product, setProduct] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -27,7 +28,7 @@ const Billing = ({ navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_order_history", requestOptions)
+        fetch(BASE_URL+"get_order_history", requestOptions)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {

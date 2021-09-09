@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { COLORS } from './../constants/theme';
+import { BASE_URL } from './../Base';
 
 // create a component
 const TextO = ({ ...rest }) => {
@@ -19,7 +20,8 @@ const TextO = ({ ...rest }) => {
     );
 }
 const VerifyUser = ({ route, navigation }) => {
-    const [userId, setUserId] = useState('')
+    const [userId, setUserId] = useState('');
+    const [user, setUser] = useState('');
     const [otp1, setOtp1] = useState('');
     const [otp2, setOtp2] = useState('');
     const [otp3, setOtp3] = useState('');
@@ -28,24 +30,72 @@ const VerifyUser = ({ route, navigation }) => {
     const [otp6, setOtp6] = useState('');
     const [otp7, setOtp7] = useState('');
     const [otp8, setOtp8] = useState('');
-    const [errors,setErrors]= useState('');
+    const [errors, setErrors] = useState('');
+    
+    
     React.useEffect(() => {
         let { user } = route.params;
-        setUserId(user.id)
-    })
+        setUserId(user.id);
+        setUser(user);
+        console.log(user)
+    },[])
+
+    const resendOtp = () => {
+        const myHeaders = new Headers();
+        const formdata = new FormData();
+        formdata.append("firstname", user.firstname);
+        formdata.append("lastname", user.lastname);
+        formdata.append("email", user.email);
+        formdata.append("password", user.password);
+        formdata.append("telephone", user.telephone);
+        formdata.append("address_1", "");
+        formdata.append("address_2", "");
+        formdata.append("city_id", "");
+        formdata.append("postcode", "");
+        formdata.append("country_id", "");
+        formdata.append("state_id", "");
+        formdata.append("newsletter", user.newsletter);
+        formdata.append("token", user.token);
+        const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: formdata,
+            redirect: 'follow'
+        };
+
+        fetch(BASE_URL+'registration', requestOptions)
+            .then((response) => response.json())
+            .then((responseJson) => {
+
+                if (responseJson.response === true) {
+                    alert('Otp Send Successfully')
+                } else {
+                    setErrortext(responseJson.error);
+                }
+            })
+            .catch((error) => {
+                //Hide Loader
+                setLoading(false);
+                console.error(error);
+            });
+    }
+
+    
 
     let cont = `${otp1}${otp2}${otp3}${otp4}`;
+    let cont2 = `${otp5}${otp6}${otp7}${otp8}`;
     const verify = () => {
-        if(!cont){
-            alert('Fill otp Field')
+        if (!cont) {
+            alert('Fill Email otp Field')
             return;
         }
-        const myHeaders = new Headers();        
+        
+        const myHeaders = new Headers();
 
         const formdata = new FormData();
         formdata.append("id", userId);
         formdata.append("otp", cont);
-        formdata.append("mobile_otp", "0");
+        formdata.append("mobile_otp", cont2);
 
         const requestOptions = {
             method: 'POST',
@@ -54,12 +104,12 @@ const VerifyUser = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/check_otp", requestOptions)
+        fetch(BASE_URL+"check_otp", requestOptions)
             .then(response => response.json())
             .then(result => {
-                if(result.responce===true){
-                    navigation.navigate('login');
-                }else{
+                if (result.responce === true) {
+                    navigation.replace('Auth');
+                } else {
                     setErrors('You have entered wrong OTP')
                 }
             })
@@ -101,7 +151,13 @@ const VerifyUser = ({ route, navigation }) => {
                             <Text style={{ fontWeight: 'bold', color: COLORS.white, textTransform: 'uppercase', letterSpacing: 2 }}>Verify</Text>
                         </TouchableOpacity>
                     </View>
-                    <Text style={{textAlign:'center',fontWeight:'bold',marginVertical:10,color:COLORS.bgcolor}}>{errors}</Text>
+                    
+                        <TouchableOpacity onPress={resendOtp}>
+                            <Text style={{ fontWeight: '200', color: COLORS.gray, textAlign: 'center' }}>I don't received OTP...!{' '}
+                                <Text style={{ fontWeight: 'bold', color: COLORS.bgcolor, textTransform: 'uppercase', letterSpacing: 2, fontSize: 15 }}>Resend Otp ?</Text></Text>
+
+                        </TouchableOpacity>
+                    <Text style={{ textAlign: 'center', fontWeight: 'bold', marginVertical: 10, color: COLORS.bgcolor }}>{errors}</Text>
                 </KeyboardAvoidingView>
             </ScrollView>
         </View>

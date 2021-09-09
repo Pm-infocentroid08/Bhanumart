@@ -6,6 +6,7 @@ import HeaderBar from '../../components/HeaderBar';
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import { useDispatch,useSelector } from 'react-redux'
 import Loader from '../Loader';
+import { BASE_URL } from './../../Base';
 // create a component
 const RatingS = ({route,navigation}) => {
     const [product, setProduct] = useState(null);
@@ -49,7 +50,7 @@ const RatingS = ({route,navigation}) => {
           redirect: 'follow'
         };
         
-        fetch("https://bhanumart.vitsol.in/api/reviews", requestOptions)
+        fetch(BASE_URL+"reviews", requestOptions)
           .then(response => response.json())
           .then(result => {
             setLoading(false);

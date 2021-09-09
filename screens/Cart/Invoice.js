@@ -17,6 +17,7 @@ import { event } from 'react-native-reanimated';
 import { WebView } from 'react-native-webview';
 import Loader from '../Loader';
 import { useIsFocused } from '@react-navigation/native'
+import { BASE_URL } from './../../Base';
 // create a component
 const Invoice = ({ route, navigation }) => {
     const [amount, setAmount] = useState('');
@@ -61,7 +62,7 @@ const Invoice = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_profile", requestOptions)
+        fetch(BASE_URL+"get_profile", requestOptions)
             .then(response => response.json())
             .then(result => setUsers(result.data))
             .catch(error => console.log('error', error))
@@ -79,7 +80,7 @@ const Invoice = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_delivery_charge", requestOptionsd)
+        fetch(BASE_URL+"get_delivery_charge", requestOptionsd)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {
@@ -106,7 +107,7 @@ const Invoice = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_order_amount", requestOptionscat)
+        fetch(BASE_URL+"get_order_amount", requestOptionscat)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {
@@ -204,7 +205,7 @@ const Invoice = ({ route, navigation }) => {
                 redirect: 'follow'
             };
 
-            fetch("https://bhanumart.vitsol.in/api/placed_order", requestOptionsp)
+            fetch(BASE_URL+"placed_order", requestOptionsp)
                 .then(response => response.json())
                 .then((responseJson) => {
                     if (responseJson.responce === true) {
@@ -259,7 +260,7 @@ const Invoice = ({ route, navigation }) => {
                 redirect: 'follow'
             };
 
-            fetch("https://bhanumart.vitsol.in/api/placed_order", requestOptionsp)
+            fetch(BASE_URL+"placed_order", requestOptionsp)
                 .then(response => response.json())
                 .then((responseJson) => {
                     if (responseJson.responce === true) {
@@ -291,7 +292,7 @@ const Invoice = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_order_amount", requestOptionsca)
+        fetch(BASE_URL+"get_order_amount", requestOptionsca)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {
@@ -320,7 +321,7 @@ const Invoice = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/get_coupon", requestOptionsck)
+        fetch(BASE_URL+"get_coupon", requestOptionsck)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {
@@ -389,7 +390,7 @@ const Invoice = ({ route, navigation }) => {
                     <View style={styles.bgCont}>
                         <Text style={{ color: COLORS.black, fontWeight: 'bold', paddingVertical: 4, fontSize: 16 }}>Delivery Details</Text>
                         <View style={styles.seperator} />
-                        <Text style={{ fontSize: 12, fontWeight: 'bold', marginVertical: 4, padding: 5 }}>
+                        <Text style={{ fontSize: 14, fontWeight: 'bold', marginVertical: 4, padding: 5 }}>
                             {'   '}{users.firstname}{' '}{users.lastname}</Text>
                         <Text style={{ ...FONTS.h3, paddingLeft: 10, textTransform: 'capitalize', color: COLORS.gray }}>
 

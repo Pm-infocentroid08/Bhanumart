@@ -5,6 +5,7 @@ import { SIZES, COLORS } from '../../constants';
 import HeaderBar from '../../components/HeaderBar';
 import { useSelector } from 'react-redux'
 import Loader from '../Loader';
+import { BASE_URL } from './../../Base';
 
 // create a component
 const OrderDetails = ({ route, navigation }) => {
@@ -42,7 +43,7 @@ const OrderDetails = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch("https://bhanumart.vitsol.in/api/cancel_order", requestOptions)
+        fetch(BASE_URL+"cancel_order", requestOptions)
             .then(response => response.json())
             .then((responseJson) => {
                 //Hide Loader

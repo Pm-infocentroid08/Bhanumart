@@ -1,8 +1,8 @@
 //import liraries
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
     View, Text, StyleSheet, VirtualizedList, TouchableOpacity, ScrollView,
-    TextInput, Platform
+    TextInput, Platform,Image
 } from 'react-native';
 
 import { useRoute } from '@react-navigation/native'
@@ -15,6 +15,7 @@ import PlaceRow from './PlaceRow';
 import * as Location from 'expo-location'
 import { Ionicons, MaterialIcons } from 'react-native-vector-icons'
 import Geocoder from 'react-native-geocoding'
+import { BASE_URL } from './../../Base';
 
 // create a component
 const MapData = ({ navigation }) => {
@@ -26,6 +27,11 @@ const MapData = ({ navigation }) => {
     const [address_1, setAddress_1] = useState('');
     const [address_2, setAddress_2] = useState('');
     const [pincode, setPincode] = useState('');
+    const [center,setCenter]=useState({
+        latitude: 22.2587,
+        longitude: 71.1924,
+    });
+    
     const [displayCurrentAddress, setDisplayCurrentAddress] = useState(
         'Wait, we are fetching you location...'
     );
@@ -33,6 +39,7 @@ const MapData = ({ navigation }) => {
         latitude: 22.2587,
         longitude: 71.1924,
     });
+    console.log(location);
     const [markerLo, setMarkerLo] = useState({
         latitude: 22.2587,
         longitude: 71.1924,
@@ -49,16 +56,17 @@ const MapData = ({ navigation }) => {
                 [{ text: 'OK' }],
                 { cancelable: false }
             );
-        }
+        }else if(status == 'granted') {
 
-        let { coords } = await Location.getCurrentPositionAsync();
+        let { coords } = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.High,});
         setLocation(coords);
-        setMarkerLo(coords);
+
         if (coords) {
             const { latitude, longitude } = coords;
 
             getLocationData(latitude, longitude)
         }
+    }
     };
     const getLocationData = async (latitude, longitude) => {
         Geocoder.init("AIzaSyCyp5NkufOfhfItDVx2DyfGTpWVRJLp8Dc");
@@ -97,7 +105,7 @@ const MapData = ({ navigation }) => {
             body: formdata,
             redirect: 'follow'
         };
-        fetch('https://bhanumart.vitsol.in/api/add_shiping_addres', requestOptions)
+        fetch(BASE_URL+'add_shiping_addres', requestOptions)
             .then((response) => response.json())
             .then((responseJson) => {
 
@@ -119,6 +127,10 @@ const MapData = ({ navigation }) => {
     const onRegionChange = (region) => {
         setLocation(region)
         getLocationData(region.latitude, region.longitude)
+    }
+    const handleBoundsChanged=()=>{
+        const mapCen = mapRef.current.getCenter();
+        setCenter(mapCen);
     }
     return (
         <View style={styles.container}>
@@ -163,42 +175,15 @@ const MapData = ({ navigation }) => {
                     pitchEnabled={true}
                     showsMyLocationButton={true}
                     style={styles.map}
-                    moveOnMarkerPress={true}
-                >
+                    //moveOnMarkerPress={true}
+                    //onBoundsChanged={useCallback(handleBoundsChanged)}
+                    onRegionChangeComplete={onRegionChange}
+                />
 
-                    <Marker
-                        coordinate={{
-                            latitude: location.lat || location.latitude,
-                        longitude: location.lng || location.longitude,
-                        }}
-                        onDragEnd={(e) => {onRegionChange(e.nativeEvent.coordinate)}}
-                        draggable
-                    >
-                        <Callout tooltip>
-                            {
-                                Platform.OS === 'android' ?
-                                    <View style={{
-                                        flex: 1, marginHorizontal: 20, backgroundColor: COLORS.black,
-                                        padding: 10, borderRadius: 10, justifyContent: 'center', marginTop: 100, width: '50%', paddingVertical: 10, height: 100
-                                    }}>
-                                        <Text style={{ color: COLORS.white }}>My Location</Text>
-                                        <Text style={{ color: COLORS.white, width: '100%' }}>{JSON.stringify(city)}</Text>
-                                    </View> :
-                                    <View style={{
-                                        flex: 1, padding: 5, backgroundColor: COLORS.black, marginHorizontal: 10, borderRadius: 10,
-                                        width: '50%', alignSelf: 'center', height: 90
-                                    }}>
-                                        <Text style={{ color: COLORS.white }}>My Location</Text>
-                                        <Text style={{ color: COLORS.white, width: '100%' }}>{JSON.stringify(city)}</Text>
-                                    </View>
-                            }
+                <View style={styles.markerFixed}>
+                        <Image style={styles.marker} source={require("../../assets/images/marker.png")} resizeMode='contain'/>
+                </View>
 
-                        </Callout>
-
-                    </Marker>
-
-
-                </MapView>
                 {
                     Platform.OS === 'android' ?
                         <TouchableOpacity style={{
@@ -270,7 +255,39 @@ const MapData = ({ navigation }) => {
         </View>
     );
 };
+/*
+ <Marker
+                        coordinate={{
+                            latitude: location.lat || location.latitude,
+                        longitude: location.lng || location.longitude,
+                        }}
+                        onDragEnd={(e) => {onRegionChange(e.nativeEvent.coordinate)}}
+                        draggable
+                       position={center}
+                    >
+                        <Callout tooltip>
+                            {
+                                Platform.OS === 'android' ?
+                                    <View style={{
+                                        flex: 1, marginHorizontal: 20, backgroundColor: COLORS.black,
+                                        padding: 10, borderRadius: 10, justifyContent: 'center', marginTop: 100, width: '50%', paddingVertical: 10, height: 100
+                                    }}>
+                                        <Text style={{ color: COLORS.white }}>My Location</Text>
+                                        <Text style={{ color: COLORS.white, width: '100%' }}>{JSON.stringify(city)}</Text>
+                                    </View> :
+                                    <View style={{
+                                        flex: 1, padding: 5, backgroundColor: COLORS.black, marginHorizontal: 10, borderRadius: 10,
+                                        width: '50%', alignSelf: 'center', height: 90
+                                    }}>
+                                        <Text style={{ color: COLORS.white }}>My Location</Text>
+                                        <Text style={{ color: COLORS.white, width: '100%' }}>{JSON.stringify(city)}</Text>
+                                    </View>
+                            }
 
+                        </Callout>
+
+                    </Marker>
+                    */
 // define your styles
 const styles = StyleSheet.create({
     container: {
@@ -352,6 +369,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#efefef',
         height: 1
     },
+    markerFixed: {
+        position: 'absolute',
+        width: '100%',
+        height: SIZES.height * 0.65,
+        flex: 1,
+        maxHeight: SIZES.height * 0.65,
+        alignItems:'center',
+        justifyContent:'center'
+      },
+      marker: {
+        height: 48,
+        width: 48
+      },
 });
 
 //make this component available to the app

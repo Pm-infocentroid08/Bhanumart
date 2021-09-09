@@ -7,6 +7,7 @@ import Button from './../../components/Container/Button';
 
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../Loader';
+import { BASE_URL } from './../../Base';
 // create a component
 const CheckOut = ({ navigation }) => {
     function renderBody() {
@@ -64,7 +65,7 @@ const CheckOut = ({ navigation }) => {
                 body: formdata,
                 redirect: 'follow'
             };
-            fetch('https://bhanumart.vitsol.in/api/add_shiping_addres', requestOptions)
+            fetch(BASE_URL+'add_shiping_addres', requestOptions)
                 .then((response) => response.json())
                 .then((responseJson) => {
 
