@@ -47,10 +47,19 @@
       "googleServicesFile": "./google-services.json",
       "permissions": [
         "ACCESS_BACKGROUND_LOCATION"
-      ]
+      ],
+      "useNextNotificationsApi": true
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "firebase": {
+        "apiKey": "AIzaSyBbUCoLk1vIY1Yx4BTx6kkKDxviJ7-p2i8",
+        "authDomain": "bhanumart-d50c2.firebaseapp.com",
+        "projectId": "bhanumart-d50c2",
+        "storageBucket": "bhanumart-d50c2.appspot.com",
+        "messagingSenderId": "996268538442",
+        "appId": "1:996268538442:web:860ff7ea9b78a80c4784b3"
+      }
     },
     "description": ""
   }

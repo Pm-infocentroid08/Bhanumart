@@ -15,10 +15,24 @@ import { Picker as SelectPicker} from '@react-native-picker/picker'
 import ModalDropdown from 'react-native-modal-dropdown';
 import { BASE_URL } from './../../Base';
 // create a component
-
+import * as Notifications from 'expo-notifications';
+import firebase from '../../firebase/fire'
+import messaging from '@react-native-firebase/messaging';
+import { initializeApp } from "firebase/app";
+//import {messaging} from '@react-native-firebase/messaging'
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
+
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,    
+    }),
+   
+  });
 const Home = ({ navigation }) => {
     const [isLoading, setLoading] = useState(true);
     const [product, setProduct] = useState([]);
@@ -33,7 +47,8 @@ const Home = ({ navigation }) => {
     const [selectedBbValue, setSelectedBbValue] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [isOpen,setIsOpen] = useState(false);
-
+    const lastNotificationResponse =
+    Notifications.useLastNotificationResponse();
     const changeModelVisibility =(bool)=>{
         setIsOpen(bool)
     }
@@ -263,7 +278,28 @@ const Home = ({ navigation }) => {
             .finally(setLoading.bind(undefined, false));
     }
 
-
+    /*async function requestUserPermission() {
+        const authStatus = await messaging().requestPermission();
+        const enabled =
+          authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+          authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      
+        if (enabled) {
+          console.log('Authorization status:', authStatus);
+        }
+      }*/
+/*
+ firebase.messaging().getToken()
+  .then(fcmToken => {
+    if (fcmToken) {
+      // user has a device token
+      console.log(fcmToken);
+    } else {
+      // user doesn't have a device token yet
+      alert('error....')
+    } 
+  });
+*/
     useEffect(() => {
 
         getProduct();
@@ -271,13 +307,26 @@ const Home = ({ navigation }) => {
         getBudProduct();
         getTrendProduct();
         getCartProduct();
+        if (lastNotificationResponse) {
+            //console.log(lastNotificationResponse);
 
+            //get the route
+            const route = JSON.stringify(
+                lastNotificationResponse.notification.request.content.data.route
+            );
+
+            //use some function to return the correct screen by route
+            navigation.navigate('Notification');
+        }
+  
+       // requestUserPermission();
         const unsubscribe = navigation.addListener('focus', () => {
             getProduct();
             getFProduct();
             getBudProduct();
             getTrendProduct();
             getCartProduct();
+            
         });
         return unsubscribe;
 

@@ -197,7 +197,8 @@ const Invoice = ({ route, navigation }) => {
             formdatap.append("GATEWAYNAME", "");
             formdatap.append("BANKNAME", "");
             formdatap.append("CHECKSUMHASH", "");
-
+            formdatap.append("order_status", 1);
+            
             const requestOptionsp = {
                 method: 'POST',
                 headers: myHeadersp,
@@ -252,7 +253,7 @@ const Invoice = ({ route, navigation }) => {
             formdatap.append("GATEWAYNAME", "");
             formdatap.append("BANKNAME", "");
             formdatap.append("CHECKSUMHASH", "");
-
+            formdatap.append("order_status", 0);
             const requestOptionsp = {
                 method: 'POST',
                 headers: myHeadersp,
@@ -264,9 +265,9 @@ const Invoice = ({ route, navigation }) => {
                 .then(response => response.json())
                 .then((responseJson) => {
                     if (responseJson.responce === true) {
-
                         navigation.navigate('Paytm', { uri: responseJson.last_id, pid: responseJson.lastid });
-                        //WebBrowser.openBrowserAsync('https://bhanumart.vitsol.in/response/transaction/${responseJson.last_id}');    
+                        console.log(responseJson.last_id)
+                        //WebBrowser.openBrowserAsync('http://bhanumart.vitsol.in/response/transaction/${responseJson.last_id}');    
                     } else {
                         setErrortext(responseJson.massage);
                         showToast(responseJson.massage)
@@ -595,7 +596,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         borderWidth: 1,
         borderColor: COLORS.primary,
-        borderRadius: SIZES.radius,
+        borderRadius : SIZES.radius,
         paddingLeft: SIZES.padding,
         marginVertical: 10
     },

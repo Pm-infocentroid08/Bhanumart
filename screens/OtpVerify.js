@@ -1,5 +1,5 @@
 //import liraries
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { COLORS } from './../constants/theme';
 import { BASE_URL } from './../Base';
@@ -31,14 +31,20 @@ const VerifyUser = ({ route, navigation }) => {
     const [otp7, setOtp7] = useState('');
     const [otp8, setOtp8] = useState('');
     const [errors, setErrors] = useState('');
-    
-    
+
+    const otp2Ref = createRef();
+    const otp3Ref = createRef();
+    const otp4Ref = createRef();
+    const otp6Ref = createRef();
+    const otp7Ref = createRef();
+    const otp8Ref = createRef();
+
     React.useEffect(() => {
         let { user } = route.params;
         setUserId(user.id);
         setUser(user);
         console.log(user)
-    },[])
+    }, [])
 
     const resendOtp = () => {
         const myHeaders = new Headers();
@@ -63,7 +69,7 @@ const VerifyUser = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch(BASE_URL+'registration', requestOptions)
+        fetch(BASE_URL + 'registration', requestOptions)
             .then((response) => response.json())
             .then((responseJson) => {
 
@@ -80,7 +86,7 @@ const VerifyUser = ({ route, navigation }) => {
             });
     }
 
-    
+
 
     let cont = `${otp1}${otp2}${otp3}${otp4}`;
     let cont2 = `${otp5}${otp6}${otp7}${otp8}`;
@@ -89,7 +95,7 @@ const VerifyUser = ({ route, navigation }) => {
             alert('Fill Email otp Field')
             return;
         }
-        
+
         const myHeaders = new Headers();
 
         const formdata = new FormData();
@@ -104,7 +110,7 @@ const VerifyUser = ({ route, navigation }) => {
             redirect: 'follow'
         };
 
-        fetch(BASE_URL+"check_otp", requestOptions)
+        fetch(BASE_URL + "check_otp", requestOptions)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {
@@ -128,18 +134,125 @@ const VerifyUser = ({ route, navigation }) => {
                 <KeyboardAvoidingView enabled>
                     <Text style={{ color: COLORS.bgcolor, fontWeight: 'bold', paddingVertical: 5, textAlign: 'center', fontSize: 18 }}>Enter your Email OTP</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10, height: 50, marginHorizontal: 30, alignSelf: 'center' }}>
-                        <TextO onChangeText={(UserAge) => setOtp1(UserAge)} />
-                        <TextO onChangeText={(UserAge) => setOtp2(UserAge)} />
-                        <TextO onChangeText={(UserAge) => setOtp3(UserAge)} />
-                        <TextO onChangeText={(UserAge) => setOtp4(UserAge)} />
+                        <View style={styles.otpCon}>
+                            <TextInput
+                                style={styles.input}
+                                numberOfLines={1}
+                                maxLength={1}
+                                returnKeyType="next"
+                                keyboardType="numeric"
+                                onChangeText={(UserAge) => {
+                                    setOtp1(UserAge);
+                                    otp2Ref.current &&
+                                    otp2Ref.current.focus()
+                                    }}
+                               
+                            />
+                        </View>
+                        <View style={styles.otpCon}>
+                            <TextInput
+                                style={styles.input}
+                                numberOfLines={1}
+                                maxLength={1}
+                                returnKeyType="next"
+                                keyboardType="numeric"
+                                ref={otp2Ref}
+                                onChangeText={(UserAge) => {
+                                    setOtp2(UserAge);
+                                    otp3Ref.current &&
+                                    otp3Ref.current.focus()
+                                    }}
+                                
+                            />
+                        </View>
+                        <View style={styles.otpCon}>
+                            <TextInput
+                                style={styles.input}
+                                numberOfLines={1}
+                                maxLength={1}
+                                returnKeyType="next"
+                                keyboardType="numeric"
+                                ref={otp3Ref}
+                                onChangeText={(UserAge) =>{
+                                    setOtp3(UserAge);
+                                    otp4Ref.current &&
+                                    otp4Ref.current.focus()
+                                    }}
+                                
+                            />
+                        </View>
+                        <View style={styles.otpCon}>
+                            <TextInput
+                                style={styles.input}
+                                numberOfLines={1}
+                                maxLength={1}
+                                ref={otp4Ref}
+                                returnKeyType="next"
+                                keyboardType="numeric"
+                                onChangeText={(UserAge) => setOtp4(UserAge)}
+                            />
+                        </View>
 
                     </View>
                     <Text style={{ color: COLORS.bgcolor, fontWeight: 'bold', paddingVertical: 5, textAlign: 'center', fontSize: 18 }}>Enter your Mobile OTP</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10, height: 50, marginHorizontal: 30, alignSelf: 'center' }}>
-                        <TextO onChangeText={(UserAge) => setOtp5(UserAge)} />
-                        <TextO onChangeText={(UserAge) => setOtp6(UserAge)} />
-                        <TextO onChangeText={(UserAge) => setOtp7(UserAge)} />
-                        <TextO onChangeText={(UserAge) => setOtp8(UserAge)} />
+                    <View style={styles.otpCon}>
+                            <TextInput
+                                style={styles.input}
+                                numberOfLines={1}
+                                maxLength={1}
+                                returnKeyType="next"
+                                keyboardType="numeric"
+                                onChangeText={(UserAge) => {
+                                    setOtp5(UserAge);
+                                    otp6Ref.current &&
+                                    otp6Ref.current.focus()
+                                }}
+                            />
+                        </View>
+                        <View style={styles.otpCon}>
+                            <TextInput
+                                style={styles.input}
+                                numberOfLines={1}
+                                maxLength={1}
+                                returnKeyType="next"
+                                keyboardType="numeric"
+                                ref={otp6Ref}
+                                onChangeText={(UserAge) => {
+                                    setOtp6(UserAge);
+                                    otp7Ref.current &&
+                                    otp7Ref.current.focus()
+                                    }}
+                               
+                            />
+                        </View>
+                        <View style={styles.otpCon}>
+                            <TextInput
+                                style={styles.input}
+                                numberOfLines={1}
+                                maxLength={1}
+                                returnKeyType="next"
+                                keyboardType="numeric"
+                                onChangeText={(UserAge) => {
+                                    setOtp7(UserAge);
+                                    otp8Ref.current &&
+                                    otp8Ref.current.focus()
+                                    }}
+                                ref={otp7Ref}
+                               
+                            />
+                        </View>
+                        <View style={styles.otpCon}>
+                            <TextInput
+                                style={styles.input}
+                                numberOfLines={1}
+                                maxLength={1}
+                                returnKeyType="next"
+                                keyboardType="numeric"
+                                ref={otp8Ref}
+                                onChangeText={(UserAge) => setOtp8(UserAge)}
+                            />
+                        </View>
 
                     </View>
                     <View style={{ height: 80, width: '100%' }}>
@@ -151,12 +264,12 @@ const VerifyUser = ({ route, navigation }) => {
                             <Text style={{ fontWeight: 'bold', color: COLORS.white, textTransform: 'uppercase', letterSpacing: 2 }}>Verify</Text>
                         </TouchableOpacity>
                     </View>
-                    
-                        <TouchableOpacity onPress={resendOtp}>
-                            <Text style={{ fontWeight: '200', color: COLORS.gray, textAlign: 'center' }}>I don't received OTP...!{' '}
-                                <Text style={{ fontWeight: 'bold', color: COLORS.bgcolor, textTransform: 'uppercase', letterSpacing: 2, fontSize: 15 }}>Resend Otp ?</Text></Text>
 
-                        </TouchableOpacity>
+                    <TouchableOpacity onPress={resendOtp}>
+                        <Text style={{ fontWeight: '200', color: COLORS.gray, textAlign: 'center' }}>I don't received OTP...!{' '}
+                            <Text style={{ fontWeight: 'bold', color: COLORS.bgcolor, textTransform: 'uppercase', letterSpacing: 2, fontSize: 15 }}>Resend Otp ?</Text></Text>
+
+                    </TouchableOpacity>
                     <Text style={{ textAlign: 'center', fontWeight: 'bold', marginVertical: 10, color: COLORS.bgcolor }}>{errors}</Text>
                 </KeyboardAvoidingView>
             </ScrollView>

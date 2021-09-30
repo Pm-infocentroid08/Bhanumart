@@ -50,11 +50,13 @@ import MapHomeEdit from './MapData/MapEdit';
 import CancelationPolicy from './Orders/Cancelation';
 import PrivacyPolicy from './PrivacyPolicy';
 import Notification from './Notification/index';
+import BItem from './Home/BItem';
 export {
     AddressPage,
     AddressEdit,
     AddMonney,
     Billing,
+    BItem,
     Cart,
     CallIng,
     CancelationPolicy,

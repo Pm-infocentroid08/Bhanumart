@@ -17,7 +17,7 @@ const Orders = ({ navigation }) => {
     const [order, setOrder] = useState('');
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
-    
+    console.log(order);
     const userInfo = useSelector(state => state.users);
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
@@ -76,6 +76,9 @@ const Orders = ({ navigation }) => {
         else if(stats==='8'){
             return <Text style={{ color: COLORS.bgcolor }}>Payment Failed</Text>;            
         }
+        else if(stats==='0'){
+            return <Text style={{ color: COLORS.bgcolor }}>Order Failed</Text>;            
+        }
 
     }
 
@@ -129,7 +132,7 @@ const Orders = ({ navigation }) => {
                     }>
                     {order.length !== undefined ? (<FlatList
                         data={order}
-                        keyExtractor={item => `${item.id}`}
+                        keyExtractor={item => `${item.txn_id}`}
                         renderItem={renderItem}
 
                     />) : (

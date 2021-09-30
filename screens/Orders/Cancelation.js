@@ -16,7 +16,7 @@ const CancelationPolicy =()=> {
     return (
       <View style={{flex:1}}>
         <WebView 
-        source={{ uri: 'https://bhanumart.vitsol.in/files/cancellation'}} 
+        source={{ uri: 'https://bhanumart.com/files/cancellation'}} 
         onLoadStart={showSpinner}
         onLoadEnd={hideSpinner}
         androidHardwareAccelerationDisabled

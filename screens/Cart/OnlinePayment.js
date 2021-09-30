@@ -11,7 +11,7 @@ const OnlinePay =({route,navigation})=> {
     const hideSpinner=()=>setWebViewLoading(false);
 
     const updateNavigationParams=(value)=>{
-      if(value.url === 'https://bhanumart.vitsol.in/thankyou'){
+      if(value.url === 'https://www.bhanumart.com/thankyou'){
         navigation.navigate('Paytmstat',{ids:params.pid});
       }
     }
@@ -22,14 +22,16 @@ const OnlinePay =({route,navigation})=> {
       init(event.data)
  });  */
     
-  
+  //'https://bhanumart.com/thankyou'
     const onMsg =(event)=>{
       const res = JSON.parse(event.nativeEvent.data);
       console.log(res.message);
-      if(res.message ==='https://bhanumart.vitsol.in/thankyou'){
+      if(res.message ==='https://www.bhanumart.com/thankyou'){
         navigation.goBack();
       }
     }
+
+    //'https://bhanumart.com/thankyou'
     return (
       <View style={{flex:1}}>
         <WebView 

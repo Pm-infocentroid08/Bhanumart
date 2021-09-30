@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "996268538442",
-    "project_id": "bhanumart-d50c2",
-    "storage_bucket": "bhanumart-d50c2.appspot.com"
+    "project_number": "118353298774",
+    "project_id": "bhanumart-4052c",
+    "storage_bucket": "bhanumart-4052c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:996268538442:android:5e54320253aa182f4784b3",
+        "mobilesdk_app_id": "1:118353298774:android:588250a78f809da1ff02f7",
         "android_client_info": {
-          "package_name": "com.krunalkadu9708.Demo"
+          "package_name": "com.bhanumart.bhanumart"
         }
       },
       "oauth_client": [
         {
-          "client_id": "996268538442-80tv4iebakrusmbuhpd0t755i046qn5m.apps.googleusercontent.com",
+          "client_id": "118353298774-suuitev2fiqf20huq8osg49npaunjabs.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDtJ-3o29OAE4CBqJnQzXCN5lUrt-swB1Y"
+          "current_key": "AIzaSyBOySR8qkqZEeQ2gvTTcXJCijhdXY98Sek"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "996268538442-80tv4iebakrusmbuhpd0t755i046qn5m.apps.googleusercontent.com",
+              "client_id": "118353298774-suuitev2fiqf20huq8osg49npaunjabs.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "996268538442-rmc2hdugdepnd7r8ageugoo9umbc30mu.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.bhanumart.bhanumart"
-              }
             }
           ]
         }

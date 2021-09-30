@@ -117,7 +117,7 @@ const Banner = () => {
                 </View>
             </TouchableOpacity>
             {isLoading ? <ActivityIndicator size="large" color="orange" /> : 
-                        <TouchableOpacity style={styles.flexContainer} onPress={() => { navigation.navigate('SubCat', { item:banner }) }} key={index}>
+                        <TouchableOpacity style={styles.flexContainer} onPress={() => { navigation.navigate('BItem') }} key={index}>
                 <Image
                     source={{ uri: banner?.image }}
                     resizeMode='cover'

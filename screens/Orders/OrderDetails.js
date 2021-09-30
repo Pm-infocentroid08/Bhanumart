@@ -67,7 +67,7 @@ const OrderDetails = ({ route, navigation }) => {
         setOrder(item)
     })
     const getButton=()=>{
-        if(order?.order_status === '8'){
+        if(order?.order_status === '8'||order?.order_status === '0'){
             return (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 100, flexDirection: 'row' }}>
                         <TouchableOpacity style={[styles.btn, styles.shadow]}
@@ -248,8 +248,8 @@ const OrderDetails = ({ route, navigation }) => {
                             <Text style={{ color: COLORS.black, fontWeight: 'bold', marginRight: 40, fontSize: 16 }}>Payment Status :</Text>
                             {
                                 order?.payment_mode==='Online' ? 
-                                <Text style={{ color: COLORS.gray, fontWeight: '600', textAlign: 'left', fontSize: 16 }}>{order?.order_status==='8'? 'Failed':'Success'}</Text>:
-                                <Text style={{ color: COLORS.gray, fontWeight: '600', textAlign: 'left', fontSize: 16 }}>{order?.order_status==='8'? 'Failed':'pending'}</Text>
+                                <Text style={{ color: COLORS.gray, fontWeight: '600', textAlign: 'left', fontSize: 16 }}>{order?.order_status==='8' || order?.order_status==='0'? 'Failed':'Success'}</Text>:
+                                <Text style={{ color: COLORS.gray, fontWeight: '600', textAlign: 'left', fontSize: 16 }}>{order?.order_status==='8' || order?.order_status==='0'? 'Failed':'pending'}</Text>
                             }
                             
                         </View>

@@ -17,7 +17,7 @@ const PrivacyPolicy =()=> {
     return (
       <View style={{flex:1}}>
         <WebView 
-        source={{ uri: 'https://bhanumart.vitsol.in/files/privacypolices'}} 
+        source={{ uri: 'https://bhanumart.com/files/privacypolices'}} 
         onLoadStart={showSpinner}
         onLoadEnd={hideSpinner}
         androidHardwareAccelerationDisabled

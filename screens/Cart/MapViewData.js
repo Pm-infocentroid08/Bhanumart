@@ -158,7 +158,7 @@ const MapDataView = ({ navigation }) => {
                         latitudeDelta: 0.0022,
                         longitudeDelta: 0.0095,
                     }}
-                    pitchEnabled={true}
+                   pitchEnabled={true}
                     showsMyLocationButton={true}
                     style={styles.map}
                     //moveOnMarkerPress={true}

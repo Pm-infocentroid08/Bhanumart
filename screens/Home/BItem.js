@@ -1,46 +1,33 @@
 //import liraries
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, FlatList, Alert, 
-    Image, ImageBackground, TouchableOpacity, ActivityIndicator, ToastAndroid,Platform} from 'react-native';
-import CategoryCard from '../../components/Menu';
+import React, { useState,useEffect } from 'react';
+import { View, Text, StyleSheet,TouchableOpacity,Image,
+ImageBackground,FlatList,ActivityIndicator,ToastAndroid,Platform,Alert } from 'react-native';
+import { COLORS, FONTS, SIZES } from './../../constants/theme';
 import HeaderBar from './../../components/HeaderBar/index';
-import { COLORS, FONTS, SIZES } from '../../constants/index'
-import { Feather, Ionicons, FontAwesome } from 'react-native-vector-icons'
-import SampleProduct from './../../components/Product/SampleProduct';
-import { SwiperFlatList } from 'react-native-swiper-flatlist';
-import data from './../../Data/Category';
-import { useDispatch, useSelector } from 'react-redux'
-import { ADD_TO_CART } from './../../ReduxCart/CartItem';
+import WishlistIcon from '../../components/WishlistIcon';
 import ShoppingCartIcon from '../../components/ShoppingCartIcon';
 import { showMessage } from "react-native-flash-message";
-import { Picker as SelectPicker } from '@react-native-picker/picker'
-import WishlistIcon from '../../components/WishlistIcon';
+import { Picker as SelectPicker } from '@react-native-picker/picker';
 import { BASE_URL } from './../../Base';
-
-
+import { Feather, Ionicons, FontAwesome } from 'react-native-vector-icons'
+import { useDispatch, useSelector } from 'react-redux'
 // create a component
-const SubCategory = ({ route, navigation }) => {
-    const [subcatogory, setSubcatogory] = useState(null);
-    const [isLoading, setLoading] = useState(true);
-    const [qty, setQty] = useState(1);
-    const [vid, setVid] = useState(null);
-    const [catValue, setCatValue] = useState([]);
-    const [product, setProduct] = useState([]);
+const BItem = ({navigation}) => {
     const [cartCount, setCartCount] = useState(0);
-    const [data, setData] = useState([]);
-    const userInfo = useSelector(state => state.users)
-
+    const [data,setData]= useState('');
+    const [isLoading, setLoading] = useState(true);
     const [selectedValue, setSelectedValue] = useState([]);
-    const [isOpen,setIsOpen] = useState(false);
+    const userInfo = useSelector(state => state.users);
+    const [qty, setQty] = useState(1);
 
-    const showToastWithGravity = (msg) => {
+     const showToastWithGravity = (msg) => {
         ToastAndroid.showWithGravity(
             msg,
             ToastAndroid.SHORT,
             ToastAndroid.CENTER
         );
     };
-    const getCartProduct = () => {
+      const getCartProduct = () => {
         const myHeaderscar = new Headers();
 
 
@@ -66,70 +53,36 @@ const SubCategory = ({ route, navigation }) => {
             .catch((error) => console.error(error));
     }
 
-    const getBanner = (id) => {
-        const myHeadersb = new Headers();
-
-        const formdatab = new FormData();
-        formdatab.append("product_type_id", id);
-
-        var requestOptionsb = {
-            method: 'POST',
-            headers: myHeadersb,
-            body: formdatab,
-            redirect: 'follow'
-        };
-
-        fetch(BASE_URL+"get_slider_product_type", requestOptionsb)
-            .then(response => response.json())
-            .then(result => setData(result.data))
-            .catch(error => console.log('error', error))
-            .finally(() => setLoading(false))
-            .finally(setLoading.bind(undefined, false));
-    }
-    const getSubCategory = (id) => {
-        const myHeaders = new Headers();
-        const formdata = new FormData();
-        formdata.append("product_type_id", id);
-        const requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: formdata,
-            redirect: 'follow'
-        };
-        fetch(BASE_URL+"get_category", requestOptions)
-            .then(response => response.json())
-            .then(result => setCatValue(result.data))
-            .catch(error => console.log('error', error))
-            .finally(() => setLoading(false))
-            .finally(setLoading.bind(undefined, false));
-    }
-    const getProduct = (id) => {
+    const getProduct = () => {
         const myHeadersP = new Headers();
-        const formdatap = new FormData();
-        formdatap.append("type", "product_type");
-        formdatap.append("id", id);
-
         const requestOptionsP = {
-            method: 'POST',
+            method: 'GET',
             headers: myHeadersP,
-            body: formdatap,
             redirect: 'follow'
         };
 
-        fetch(BASE_URL+"get_filtered_product", requestOptionsP)
+        fetch(BASE_URL+"get_new_listing_products", requestOptionsP)
             .then(response => response.json())
             .then(result => {
                 if (result.responce === true) {
-                    setProduct(result.data);
+                    setData(result.data);
                 } else {
-                    Alert.alert('No Product Found');
+                    showMessage({
+                        message: result.massage,
+                        type: "warning",
+                    });
                 }
 
             })
-            .catch(error => console.log('error', error))
+            .catch((error) => console.error(error))
             .finally(() => setLoading(false))
             .finally(setLoading.bind(undefined, false));
     }
+
+    useEffect(()=>{
+        getProduct();
+        getCartProduct();
+    },[navigation]);
 
     const add_cart = (item) => {
         if (item.id === selectedValue.product_id) {
@@ -211,46 +164,7 @@ const SubCategory = ({ route, navigation }) => {
         }
 
     }
-
-    useEffect(() => {
-
-        let { item } = route.params;
-        //setSubcatogory(item);
-        //setLoading(false);
-        //if(isLoading===false){
-        getBanner(item.product_type_id || item.id);
-        getSubCategory(item.product_type_id || item.id);
-        getProduct(item.product_type_id || item.id);
-        getCartProduct();
-        //}
-    }, [1500, navigation])
-
-
-    function renderCategory() {
-        return (
-            <View style={styles.containerBox}>
-
-                <View style={{ flex: 1, backgroundColor: '#F0F0F0', elevation: 5, marginVertical: 10, margin: 5 }}>
-                    <View style={{ height: 40, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                        <Feather name='slack' color={COLORS.bgcolor} size={SIZES.radius} />
-                        <Text style={{ ...FONTS.h2, color: COLORS.bgcolor, fontWeight: 'bold', marginHorizontal: SIZES.padding }}>Shop By Category</Text>
-                        <Feather name='slack' color={COLORS.bgcolor} size={SIZES.radius} />
-                    </View>
-
-                    {isLoading ? <ActivityIndicator size="large" color="orange" /> :
-                        <FlatList
-                            data={catValue}
-                            numColumns={3}
-                            keyExtractor={item => `${item.id}`}
-                            renderItem={({ item, index }) => (
-                                <CategoryCard item={item} key={index} />
-                            )}
-                        />}
-                </View>
-            </View>
-        )
-    }
-    function renderDetails() {
+    const renderList=()=>{
         const renderItem = ({ item }) => (
             <View key={item.id}>
                 <View style={styles.containerItem} >
@@ -563,65 +477,33 @@ const SubCategory = ({ route, navigation }) => {
                 <View style={styles.seperator} />
             </View>
         )
-        return (
-            <View style={styles.containerBox}>
-
-
-                <View style={[styles.shadow, { flex: 1, margin: SIZES.base, backgroundColor: COLORS.white }]}>
-                    {isLoading ? <ActivityIndicator size="large" color="orange" /> : <View style={{ height: SIZES.height * 0.28, alignItems: 'center' }}>
-                        <SwiperFlatList
-                            showPagination
-                            snapToAlignment='center'
-                            snapToInterval={SIZES.width}
-                            paginationStyleItem={{ height: 10, width: 10, borderRadius: 5 }}
-                            data={data}
-                            renderItem={({ item }) => (
-                                <TouchableOpacity style={[styles.child, { backgroundColor: item }]} onPress={() => navigation.navigate('SubCategory', { item })}>
-                                    <Image
-                                        source={{ uri: item.image }}
-                                        style={{
-                                            width: '100%',
-                                            height: '100%'
-                                        }}
-                                    />
-                                </TouchableOpacity>
-                            )}
-                        />
-                    </View>}
-                    <View style={[styles.seperator, { backgroundColor: COLORS.lgray }]} />
-                    {isLoading ? <ActivityIndicator size="large" color="orange" /> : <FlatList
-                        data={product.slice(0,12)}
-                        keyExtractor={item => `${item.id}`}
-                        renderItem={renderItem}
-                    />}
-                    <TouchableOpacity
-                        style={{
-                            height: 40, justifyContent: 'center',
-                            alignItems: 'center', flexDirection: 'row',
-                            marginVertical: 5
-                        }}
-                        onPress={() => navigation.navigate('ProdList')}>
-                        <Text style={{ ...FONTS.h3, fontWeight: 'bold', paddingRight: SIZES.base }}>View All</Text>
-                        <Ionicons name='arrow-forward' color={COLORS.bgcolor} size={SIZES.padding} />
-                    </TouchableOpacity>
+        return(
+            <View>
+               {isLoading ? 
+               <ActivityIndicator size="large" color="green" /> : 
+               
+                <View style={{paddingBottom:100}}>
+                <FlatList
+                    data={data}
+                    keyExtractor={item => item.id}
+                    renderItem={renderItem}
+                />
                 </View>
+               }
             </View>
         )
     }
     return (
-        <SafeAreaView style={[styles.container, { paddingTop: 40 }]}>
-            <HeaderBar titleText={subcatogory?.product_type} onPress={() => navigation.goBack()} />
-            <ScrollView style={styles.container}>
-                {renderCategory()}
-                {renderDetails()}
-            </ScrollView>
+        <View style={styles.container}>
+            <HeaderBar titleText='Offers Product List' onPress={() => navigation.goBack()} />
+            {renderList()}
             <View style={{ position: 'absolute', top: 50, right: 50, alignItems: 'center', justifyContent: 'center', width: 60, height: 60, borderRadius: 30 }}>
                 <WishlistIcon/>
             </View>
             <View style={{ position: 'absolute', top: 50, right: 10, alignItems: 'center', justifyContent: 'center', width: 60, height: 60, borderRadius: 30 }}>
                 <ShoppingCartIcon cartCount={cartCount} />
             </View>
-        </SafeAreaView>
+        </View>
     );
 };
 
@@ -629,7 +511,8 @@ const SubCategory = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.white
+        backgroundColor: COLORS.white,
+        paddingTop:50
     },
     text: {
         color: COLORS.bgcolor,
@@ -702,4 +585,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default SubCategory;
+export default BItem;

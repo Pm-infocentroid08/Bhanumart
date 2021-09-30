@@ -48,6 +48,7 @@ import Loader from '../screens/Auth/loader';
 import SubProductList from '../screens/Category/SubCategory';
 import { useNavigation } from '@react-navigation/native';
 import MapHomeEdit from './../screens/MapData/MapEdit';
+import BItem from './../screens/Home/BItem';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -292,6 +293,11 @@ const Router = () => {
                 }}
             />
             <Stack.Screen name='Notification' component={Notification}
+                options={{
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen name='BItem' component={BItem}
                 options={{
                     headerShown: false
                 }}

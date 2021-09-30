@@ -2,7 +2,7 @@
 // https://aboutreact.com/react-native-login-and-signup/
 
 // Import React and Component
-import React, { useState, createRef } from 'react';
+import React, { useState, createRef, useEffect,useRef } from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -14,7 +14,8 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView, Alert
 } from 'react-native';
-
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ADD_USER } from '../ReduxCart/CartItem'
 import { useDispatch, useSelector } from 'react-redux'
@@ -22,6 +23,8 @@ import Loader from './Loader';
 import { COLORS } from './../constants/theme';
 import VerifyUser from './OtpVerify';
 import { BASE_URL } from './../Base';
+import {useNavigation} from '@react-navigation/native'
+
 
 const Login = ({ navigation }) => {
   const [userEmail, setUserEmail] = useState('');
@@ -30,9 +33,38 @@ const Login = ({ navigation }) => {
   const [errortext, setErrortext] = useState('');
   const [user, setUser] = useState('');
   const [type, setType] = useState(0);
+  const [tokens, setToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
   const dispatch = useDispatch()
   const passwordInputRef = createRef();
+
+  
+
+  useEffect(() => {
+
+    //expo token registration purpose
+    registerForPushNotificationsAsync().then(token => setToken(token))
+      .catch(err => console.error(err));
+
+      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+        setNotification(notification);
+        navigation.navigate('Notification');
+      });
+  
+      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+        console.log(response);
+        navigation.navigate('Notification');
+      });
+
+     
+      return () => {
+        Notifications.removeNotificationSubscription(notificationListener.current);
+        Notifications.removeNotificationSubscription(responseListener.current);
+      };
+  }, []);
 
   const handleSubmitPress = () => {
     setErrortext('');
@@ -47,9 +79,12 @@ const Login = ({ navigation }) => {
     setLoading(true);
 
     const myHeaders = new Headers();
+
     const formdata = new FormData();
     formdata.append("email_mobile", userEmail);
     formdata.append("password", userPassword);
+    formdata.append("token", tokens);
+
     const requestOptions = {
       method: 'POST',
       headers: myHeaders,
@@ -57,30 +92,61 @@ const Login = ({ navigation }) => {
       redirect: 'follow'
     };
 
-    fetch(BASE_URL+'login', requestOptions)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        //Hide Loader
-        setLoading(false);
+    fetch(BASE_URL+"login", requestOptions)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      //Hide Loader
+      setLoading(false);
 
-        // If server response message same as Data Matched
-        if (responseJson.responce === true) {
-          AsyncStorage.setItem('user_id', responseJson.data.email);
-          AsyncStorage.setItem('user_toid', responseJson.data.id);
-          dispatch({ type: ADD_USER, payload: responseJson.data.id })
-          navigation.replace('Drawer');
-        } else {
-          setErrortext(responseJson.error);
-          setUser(responseJson.data||'');
-          setType(responseJson.type);        
-        }
-      })
-      .catch((error) => {
-        //Hide Loader
-        setLoading(false);
-        console.error(error);
-      });
+      // If server response message same as Data Matched
+      if (responseJson.responce === true) {
+        AsyncStorage.setItem('user_id', responseJson.data.email);
+        AsyncStorage.setItem('user_toid', responseJson.data.id);
+        dispatch({ type: ADD_USER, payload: responseJson.data.id })
+        navigation.replace('Drawer');
+      } else {
+        setErrortext(responseJson.error);
+        setUser(responseJson.data||'');
+        setType(responseJson.type);
+      }
+    })
+    .catch((error) => {
+      //Hide Loader
+      setLoading(false);
+      console.error(error);
+    });
   };
+
+  async function registerForPushNotificationsAsync() {
+    let token;
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+
+    return token;
+  }
 
   return (
     <View style={styles.mainBody}>
@@ -103,11 +169,11 @@ const Login = ({ navigation }) => {
 
         </View>
         <View>
-        {errortext != '' ? (
-              <Text style={[styles.errorTextStyle,{paddingVertical:5}]}>
-                {errortext}
-              </Text>
-            ) : null}
+          {errortext != '' ? (
+            <Text style={[styles.errorTextStyle, { paddingVertical: 5 }]}>
+              {errortext}
+            </Text>
+          ) : null}
           <KeyboardAvoidingView enabled>
 
             <View style={styles.SectionStyle}>
@@ -144,19 +210,19 @@ const Login = ({ navigation }) => {
                 returnKeyType="next"
               />
             </View>
-           
+
             {
-              type === 1 ? 
-              <View style={{width:120,height:40,borderRadius:20,marginBottom:15,alignSelf:'center',backgroundColor:'green',justifyContent:'center',alignItems:'center'}}>
-              <TouchableOpacity onPress={() => navigation.navigate('Verify',{user})}>
-                <Text style={{color:COLORS.white,fontWeight:'bold'}}>Verify User</Text>
-              </TouchableOpacity>
-            </View>:<View/>
+              type === 1 ?
+                <View style={{ width: 120, height: 40, borderRadius: 20, marginBottom: 15, alignSelf: 'center', backgroundColor: 'green', justifyContent: 'center', alignItems: 'center' }}>
+                  <TouchableOpacity onPress={() => navigation.navigate('Verify', { user })}>
+                    <Text style={{ color: COLORS.white, fontWeight: 'bold' }}>Verify User</Text>
+                  </TouchableOpacity>
+                </View> : <View />
             }
-            
-            <View style={{height:20,justifyContent:'center',alignItems:'flex-end',marginRight:45}}>
-              <TouchableOpacity onPress={()=>navigation.navigate('ForgotPass')}>
-                <Text style={{color:COLORS.bgcolor,fontWeight:'bold'}}>Forgot Password ?</Text>
+
+            <View style={{ height: 20, justifyContent: 'center', alignItems: 'flex-end', marginRight: 45 }}>
+              <TouchableOpacity onPress={() => navigation.navigate('ForgotPass')}>
+                <Text style={{ color: COLORS.bgcolor, fontWeight: 'bold' }}>Forgot Password ?</Text>
               </TouchableOpacity>
             </View>
 
@@ -253,3 +319,54 @@ const styles = StyleSheet.create({
   },
 });
 
+/*
+
+ const handleSubmitPress = () => {
+    setErrortext('');
+    if (!userEmail) {
+      alert('Please fill Email');
+      return;
+    }
+    if (!userPassword) {
+      alert('Please fill Password');
+      return;
+    }
+    setLoading(true);
+
+    const myHeaders = new Headers();
+    const formdata = new FormData();
+    formdata.append("email_mobile", userEmail);
+    formdata.append("password", userPassword);
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow'
+    };
+
+    fetch(BASE_URL+'login', requestOptions)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        //Hide Loader
+        setLoading(false);
+
+        // If server response message same as Data Matched
+        if (responseJson.responce === true) {
+          AsyncStorage.setItem('user_id', responseJson.data.email);
+          AsyncStorage.setItem('user_toid', responseJson.data.id);
+          dispatch({ type: ADD_USER, payload: responseJson.data.id })
+          navigation.replace('Drawer');
+        } else {
+          setErrortext(responseJson.error);
+          setUser(responseJson.data||'');
+          setType(responseJson.type);
+        }
+      })
+      .catch((error) => {
+        //Hide Loader
+        setLoading(false);
+        console.error(error);
+      });
+  };
+
+*/
